@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>X-Roleplay – Analytics</title>
+<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+  :root{--bg:#080b14;--card:#0d1120;--panel:#111827;--ac:#8b5cf6;--acb:#a78bfa;--glow:rgba(139,92,246,.3);--red:#ef4444;--green:#22c55e;--bdr:rgba(139,92,246,.15);--bdrh:rgba(139,92,246,.45);--t1:#f1f5f9;--t2:#94a3b8;--t3:#475569}
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--t1);min-height:100vh;overflow-x:hidden}
+  body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse 80% 50% at 20% 10%,rgba(139,92,246,.07) 0%,transparent 60%);pointer-events:none;z-index:0}
+  nav{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:0 28px;height:58px;background:rgba(8,11,20,.92);backdrop-filter:blur(18px);border-bottom:1px solid var(--bdr)}
+  .logo{display:flex;align-items:center;gap:9px;text-decoration:none;color:var(--t1)}
+  .logo-x{width:29px;height:29px;background:var(--ac);clip-path:polygon(50% 0%,100% 50%,50% 100%,0% 50%);display:grid;place-items:center;font-family:'Rajdhani',sans-serif;font-weight:700;font-size:13px;color:#fff}
+  .logo span{font-family:'Rajdhani',sans-serif;font-size:19px;font-weight:700;letter-spacing:1px}
+  .ntabs{display:flex;gap:3px}
+  .ntab{padding:5px 15px;border-radius:6px;cursor:pointer;font-size:13px;font-weight:500;color:var(--t2);transition:all .2s;border:1px solid transparent;user-select:none;text-decoration:none;display:block}
+  .ntab:hover{color:var(--t1);background:var(--panel)}
+  .ntab.on{color:var(--acb);background:rgba(139,92,246,.1);border-color:var(--bdr)}
+
+  main{position:relative;z-index:1;max-width:1200px;margin:0 auto;padding:28px 22px 70px}
+
+  /* Streamer selector */
+  .selector{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:28px}
+  .sel-btn{padding:6px 14px;border-radius:20px;font-size:12px;font-weight:500;cursor:pointer;border:1px solid var(--bdr);background:transparent;color:var(--t2);transition:all .2s;font-family:'Outfit',sans-serif;display:flex;align-items:center;gap:6px}
+  .sel-btn:hover{color:var(--t1);border-color:var(--bdrh)}
+  .sel-btn.on{background:rgba(139,92,246,.15);border-color:var(--ac);color:var(--acb)}
+  .sel-btn .av-sm{width:20px;height:20px;border-radius:50%;background:var(--panel);object-fit:cover}
+  .sel-btn .live-dot{width:6px;height:6px;border-radius:50%;background:var(--red);animation:blink 1.5s infinite;flex-shrink:0}
+  @keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+
+  /* Stats header */
+  .stats-head{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:24px}
+  @media(max-width:700px){.stats-head{grid-template-columns:repeat(2,1fr)}}
+  .stat-card{background:var(--card);border:1px solid var(--bdr);border-radius:10px;padding:16px 18px}
+  .stat-card .lbl{font-size:11px;color:var(--t3);text-transform:uppercase;letter-spacing:.8px;margin-bottom:6px}
+  .stat-card .val{font-family:'Rajdhani',sans-serif;font-size:26px;font-weight:700;color:var(--acb);line-height:1}
+  .stat-card .sub{font-size:11px;color:var(--t3);margin-top:3px}
+
+  /* Charts grid */
+  .charts{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px}
+  @media(max-width:800px){.charts{grid-template-columns:1fr}}
+  .chart-box{background:var(--card);border:1px solid var(--bdr);border-radius:10px;padding:18px 20px}
+  .chart-box h3{font-family:'Rajdhani',sans-serif;font-size:16px;font-weight:600;margin-bottom:14px;color:var(--t1)}
+  .chart-box h3 span{color:var(--t3);font-size:12px;font-family:'Outfit',sans-serif;font-weight:400;margin-left:6px}
+  .chart-wrap{position:relative;height:220px}
+  .chart-full{grid-column:1/-1}
+
+  /* Server list */
+  .server-list{display:flex;flex-direction:column;gap:8px}
+  .server-row{display:flex;align-items:center;gap:10px}
+  .server-name{font-size:13px;font-weight:500;min-width:120px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .server-bar-wrap{flex:1;background:var(--panel);border-radius:4px;height:8px;overflow:hidden}
+  .server-bar{height:100%;border-radius:4px;background:linear-gradient(90deg,var(--ac),var(--acb));transition:width .6s ease}
+  .server-hrs{font-size:12px;color:var(--t2);font-family:'Rajdhani',sans-serif;font-weight:600;min-width:50px;text-align:right}
+
+  /* Empty/loading states */
+  .loading-state{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:60px;gap:14px;color:var(--t2);font-size:14px}
+  .spinner{width:34px;height:34px;border:3px solid var(--bdr);border-top-color:var(--ac);border-radius:50%;animation:rot .8s linear infinite}
+  @keyframes rot{to{transform:rotate(360deg)}}
+  .empty-state{text-align:center;padding:40px;color:var(--t3);font-size:13px;line-height:1.8}
+  .empty-state strong{display:block;font-family:'Rajdhani',sans-serif;font-size:18px;color:var(--t2);margin-bottom:6px}
+
+  .ph{margin-bottom:20px}
+  .ph h1{font-family:'Rajdhani',sans-serif;font-size:28px;font-weight:700}
+  .ph h1 em{color:var(--acb);font-style:normal}
+  .ph p{color:var(--t2);font-size:13px;margin-top:4px}
+</style>
+</head>
+<body>
+<nav>
+  <a class="logo" href="index.html">
+    <div class="logo-x">X</div>
+    <span>X-Roleplay</span>
+  </a>
+  <div class="ntabs">
+    <a class="ntab"    href="index.html">Live Hub</a>
+    <a class="ntab on" href="analytics.html">Analytics</a>
+  </div>
+</nav>
+
+<main>
+  <div class="ph">
+    <h1>Stream <em>Analytics</em></h1>
+    <p>Auswertungen aller Streamer — Stunden, Server, Zuschauer</p>
+  </div>
+
+  <div class="selector" id="selector">
+    <div class="loading-state"><div class="spinner"></div></div>
+  </div>
+
+  <div id="content">
+    <div class="loading-state"><div class="spinner"></div>Lade Daten…</div>
+  </div>
+</main>
+
+<script>
+const SUPABASE_URL = 'https://fqcagtwoayaohebmmpsk.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_zBWIAfsYopOtwW8ASK-WiA_8UJJLQYH';
+
+const STREAMERS = [
+  {login:'dero_tv',        display:'Dero_TV',        ini:'DT'},
+  {login:'d3viigirl',      display:'D3viiGirl',       ini:'DG'},
+  {login:'alessio_guzman', display:'Alessio_Guzman',  ini:'AG'},
+  {login:'keanuzien',      display:'KeanuzieN',       ini:'KZ'},
+  {login:'reda__7272',     display:'Reda__7272',      ini:'RE'},
+  {login:'harryyyys',      display:'Harryyyys',       ini:'HA'},
+  {login:'tayo_rulo',      display:'Tayo_Rulo',       ini:'TR'},
+  {login:'dayiasena',      display:'Dayiasena',       ini:'DA'},
+  {login:'taypacino',      display:'TayPacino',       ini:'TP'},
+  {login:'bladinostv',     display:'BladinosTV',      ini:'BL'},
+  {login:'realneotv_nrw',  display:'RealNeoTV_NRW',   ini:'RN'},
+];
+
+let currentLogin = null;
+let liveStatus   = {};
+let charts       = {};
+
+async function sb(path) {
+  const r = await fetch(`${SUPABASE_URL}/rest/v1/${path}`, {
+    headers: { 'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + SUPABASE_KEY }
+  });
+  return r.json();
+}
+
+async function init() {
+  // Get current live status from streamer_status table
+  try {
+    const status = await sb('streamer_status?select=login,is_live,viewers');
+    for (const s of (status||[])) liveStatus[s.login] = s;
+  } catch(e) {}
+
+  buildSelector();
+
+  // Check URL param
+  const params = new URLSearchParams(location.search);
+  const pre    = params.get('streamer');
+  if (pre && STREAMERS.find(s => s.login === pre)) {
+    selectStreamer(pre);
+  } else {
+    selectStreamer(STREAMERS[0].login);
+  }
+}
+
+function buildSelector() {
+  const sel = document.getElementById('selector');
+  sel.innerHTML = STREAMERS.map(s => {
+    const live = liveStatus[s.login]?.is_live;
+    return `<button class="sel-btn" id="btn-${s.login}" onclick="selectStreamer('${s.login}')">
+      ${live ? '<span class="live-dot"></span>' : ''}
+      <span>${s.display}</span>
+    </button>`;
+  }).join('');
+}
+
+async function selectStreamer(login) {
+  currentLogin = login;
+
+  // Update active button
+  document.querySelectorAll('.sel-btn').forEach(b => b.classList.remove('on'));
+  const btn = document.getElementById('btn-' + login);
+  if (btn) btn.classList.add('on');
+
+  // Update URL
+  history.replaceState(null, '', '?streamer=' + login);
+
+  // Show loading
+  document.getElementById('content').innerHTML =
+    '<div class="loading-state"><div class="spinner"></div>Lade Statistiken…</div>';
+
+  // Destroy old charts
+  Object.values(charts).forEach(c => c.destroy());
+  charts = {};
+
+  try {
+    await loadStreamerStats(login);
+  } catch(e) {
+    document.getElementById('content').innerHTML =
+      `<div class="empty-state"><strong>Keine Daten vorhanden</strong>Noch keine Stream-Daten für diesen Streamer gesammelt.<br>Die Datenerfassung startet automatisch beim nächsten Live-Stream.</div>`;
+  }
+}
+
+async function loadStreamerStats(login) {
+  // Fetch all live snapshots for this streamer
+  const snaps = await sb(
+    `stream_snapshots?login=eq.${login}&is_live=eq.true&select=server,viewers,recorded_at&order=recorded_at.asc&limit=50000`
+  );
+
+  const s = STREAMERS.find(x => x.login === login);
+  const status = liveStatus[login] || {};
+
+  if (!snaps || !snaps.length) {
+    document.getElementById('content').innerHTML =
+      `<div class="empty-state"><strong>Noch keine Daten</strong>Für <em>${s.display}</em> wurden noch keine Stream-Daten aufgezeichnet.<br>Die Erfassung startet automatisch sobald der Streamer das nächste Mal live geht.</div>`;
+    return;
+  }
+
+  // ── Calculate stats ──
+  const totalMins  = snaps.length;
+  const totalHours = Math.round(totalMins / 60 * 10) / 10;
+
+  // Hours per server
+  const serverMap = {};
+  for (const snap of snaps) {
+    const srv = snap.server || 'Unbekannt';
+    serverMap[srv] = (serverMap[srv] || 0) + 1;
+  }
+  const serverArr = Object.entries(serverMap)
+    .map(([server, mins]) => ({ server, hours: Math.round(mins / 60 * 10) / 10 }))
+    .sort((a, b) => b.hours - a.hours);
+
+  // Peak viewers
+  const peakViewers = Math.max(...snaps.map(s => s.viewers || 0));
+
+  // Avg viewers (when live)
+  const avgViewers = Math.round(snaps.reduce((a, s) => a + (s.viewers || 0), 0) / snaps.length);
+
+  // Last live
+  const lastLive = snaps[snaps.length - 1]?.recorded_at;
+  const lastLiveStr = lastLive
+    ? new Date(lastLive).toLocaleDateString('de-DE', { day:'2-digit', month:'2-digit', year:'numeric', hour:'2-digit', minute:'2-digit' })
+    : '–';
+
+  // Viewer timeline — group by day
+  const byDay = {};
+  for (const snap of snaps) {
+    const day = snap.recorded_at?.substring(0, 10);
+    if (!byDay[day]) byDay[day] = [];
+    byDay[day].push(snap.viewers || 0);
+  }
+  const timelineLabels = Object.keys(byDay).slice(-30);
+  const timelineData   = timelineLabels.map(d => Math.round(byDay[d].reduce((a,b)=>a+b,0)/byDay[d].length));
+
+  // Hours per day
+  const hoursByDay = timelineLabels.map(d => Math.round(byDay[d].length / 60 * 10) / 10);
+
+  // ── Render ──
+  document.getElementById('content').innerHTML = `
+    <div class="stats-head">
+      <div class="stat-card">
+        <div class="lbl">Gesamt gestreamt</div>
+        <div class="val">${totalHours}h</div>
+        <div class="sub">${totalMins} Minuten erfasst</div>
+      </div>
+      <div class="stat-card">
+        <div class="lbl">Peak Zuschauer</div>
+        <div class="val">${peakViewers.toLocaleString()}</div>
+        <div class="sub">Ø ${avgViewers.toLocaleString()} im Schnitt</div>
+      </div>
+      <div class="stat-card">
+        <div class="lbl">Zuletzt live</div>
+        <div class="val" style="font-size:16px;line-height:1.3">${lastLiveStr}</div>
+        <div class="sub">${status.is_live ? '🔴 Gerade live!' : 'Offline'}</div>
+      </div>
+      <div class="stat-card">
+        <div class="lbl">Server genutzt</div>
+        <div class="val">${serverArr.length}</div>
+        <div class="sub">verschiedene Server</div>
+      </div>
+    </div>
+
+    <div class="charts">
+      <div class="chart-box">
+        <h3>Stunden pro Server</h3>
+        <div class="server-list" id="server-list"></div>
+      </div>
+      <div class="chart-box">
+        <h3>Ø Zuschauer <span>pro Tag</span></h3>
+        <div class="chart-wrap"><canvas id="chart-viewers"></canvas></div>
+      </div>
+      <div class="chart-box chart-full">
+        <h3>Stream-Stunden <span>pro Tag (letzte 30 Tage)</span></h3>
+        <div class="chart-wrap"><canvas id="chart-hours"></canvas></div>
+      </div>
+    </div>`;
+
+  // Server bars
+  const maxHrs = serverArr[0]?.hours || 1;
+  document.getElementById('server-list').innerHTML = serverArr.slice(0, 8).map(s => `
+    <div class="server-row">
+      <div class="server-name" title="${s.server}">${s.server}</div>
+      <div class="server-bar-wrap">
+        <div class="server-bar" style="width:${(s.hours/maxHrs*100).toFixed(1)}%"></div>
+      </div>
+      <div class="server-hrs">${s.hours}h</div>
+    </div>`).join('');
+
+  // Chart defaults
+  const chartDefaults = {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: { legend: { display: false } },
+    scales: {
+      x: { ticks: { color: '#475569', font: { size: 10 } }, grid: { color: 'rgba(139,92,246,.08)' } },
+      y: { ticks: { color: '#475569', font: { size: 10 } }, grid: { color: 'rgba(139,92,246,.08)' }, beginAtZero: true }
+    }
+  };
+
+  // Viewers chart
+  charts.viewers = new Chart(document.getElementById('chart-viewers'), {
+    type: 'line',
+    data: {
+      labels: timelineLabels.map(d => d.substring(5)),
+      datasets: [{
+        data: timelineData,
+        borderColor: '#8b5cf6',
+        backgroundColor: 'rgba(139,92,246,.1)',
+        fill: true,
+        tension: 0.4,
+        pointRadius: 3,
+        pointBackgroundColor: '#8b5cf6',
+      }]
+    },
+    options: { ...chartDefaults }
+  });
+
+  // Hours chart
+  charts.hours = new Chart(document.getElementById('chart-hours'), {
+    type: 'bar',
+    data: {
+      labels: timelineLabels.map(d => d.substring(5)),
+      datasets: [{
+        data: hoursByDay,
+        backgroundColor: 'rgba(139,92,246,.5)',
+        borderColor: '#8b5cf6',
+        borderWidth: 1,
+        borderRadius: 4,
+      }]
+    },
+    options: { ...chartDefaults }
+  });
+}
+
+init();
+</script>
+</body>
+</html>

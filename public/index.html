@@ -10,21 +10,17 @@
   *{margin:0;padding:0;box-sizing:border-box}
   body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--t1);min-height:100vh;overflow-x:hidden}
   body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse 80% 50% at 20% 10%,rgba(139,92,246,.07) 0%,transparent 60%),radial-gradient(ellipse 60% 40% at 80% 85%,rgba(99,102,241,.05) 0%,transparent 55%);pointer-events:none;z-index:0}
-
-  /* NAV */
   nav{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:0 28px;height:58px;background:rgba(8,11,20,.92);backdrop-filter:blur(18px);border-bottom:1px solid var(--bdr)}
   .logo{display:flex;align-items:center;gap:9px;text-decoration:none;color:var(--t1)}
   .logo-x{width:29px;height:29px;background:var(--ac);clip-path:polygon(50% 0%,100% 50%,50% 100%,0% 50%);display:grid;place-items:center;font-family:'Rajdhani',sans-serif;font-weight:700;font-size:13px;color:#fff}
   .logo span{font-family:'Rajdhani',sans-serif;font-size:19px;font-weight:700;letter-spacing:1px}
   .ntabs{display:flex;gap:3px}
-  .ntab{padding:5px 15px;border-radius:6px;cursor:pointer;font-size:13px;font-weight:500;color:var(--t2);transition:all .2s;border:1px solid transparent;user-select:none}
+  .ntab{padding:5px 15px;border-radius:6px;cursor:pointer;font-size:13px;font-weight:500;color:var(--t2);transition:all .2s;border:1px solid transparent;user-select:none;text-decoration:none;display:block}
   .ntab:hover{color:var(--t1);background:var(--panel)}
   .ntab.on{color:var(--acb);background:rgba(139,92,246,.1);border-color:var(--bdr)}
   .pill{display:flex;align-items:center;gap:6px;padding:4px 11px;background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.3);border-radius:20px;font-size:11px;font-weight:700;color:#fca5a5;letter-spacing:.9px}
   .dot{width:6px;height:6px;border-radius:50%;background:var(--red);animation:blink 1.5s ease-in-out infinite}
   @keyframes blink{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.72)}}
-
-  /* MAIN */
   main{position:relative;z-index:1;max-width:1380px;margin:0 auto;padding:28px 22px 70px}
   .ph{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:22px;flex-wrap:wrap;gap:14px}
   .ph h1{font-family:'Rajdhani',sans-serif;font-size:30px;font-weight:700;line-height:1}
@@ -33,8 +29,6 @@
   .sts{display:flex;gap:22px}
   .st .v{font-family:'Rajdhani',sans-serif;font-size:21px;font-weight:700;color:var(--acb);line-height:1}
   .st .l{font-size:10px;color:var(--t3);text-transform:uppercase;letter-spacing:.8px;margin-top:2px;text-align:right}
-
-  /* FILTER */
   .fbar{display:flex;align-items:center;gap:7px;margin-bottom:20px;flex-wrap:wrap}
   .fb{padding:5px 13px;border-radius:6px;font-size:12px;font-weight:500;cursor:pointer;border:1px solid var(--bdr);background:transparent;color:var(--t2);transition:all .2s;font-family:'Outfit',sans-serif}
   .fb:hover{color:var(--t1);border-color:var(--bdrh)}
@@ -48,24 +42,17 @@
   .srch:focus-within{border-color:var(--bdrh)}
   .srch input{background:none;border:none;outline:none;color:var(--t1);font-family:'Outfit',sans-serif;font-size:13px;width:155px}
   .srch input::placeholder{color:var(--t3)}
-
-  /* GRID */
   #grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
   @media(max-width:1100px){#grid{grid-template-columns:repeat(3,1fr)}}
   @media(max-width:760px){#grid{grid-template-columns:repeat(2,1fr)}}
   @media(max-width:460px){#grid{grid-template-columns:1fr}}
-
-  /* CARD */
   .card{border-radius:11px;overflow:hidden;background:var(--card);border:1px solid var(--bdr);transition:transform .25s,box-shadow .25s,border-color .25s;animation:fi .45s ease both;text-decoration:none;color:inherit;display:block}
   .card:hover{transform:translateY(-4px) scale(1.015);box-shadow:0 14px 38px rgba(0,0,0,.55),0 0 0 1px var(--bdrh),0 0 26px var(--glow);border-color:var(--bdrh)}
   @keyframes fi{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
   .card:nth-child(1){animation-delay:.03s}.card:nth-child(2){animation-delay:.07s}.card:nth-child(3){animation-delay:.11s}
   .card:nth-child(4){animation-delay:.15s}.card:nth-child(5){animation-delay:.19s}.card:nth-child(6){animation-delay:.23s}
   .card:nth-child(7){animation-delay:.27s}.card:nth-child(8){animation-delay:.31s}.card:nth-child(9){animation-delay:.35s}
-  .card.off{opacity:.6}
-  .card.off:hover{opacity:1}
-
-  /* THUMB */
+  .card.off{opacity:.6}.card.off:hover{opacity:1}
   .thumb{position:relative;width:100%;aspect-ratio:16/9;overflow:hidden;background:#07090f}
   .thumb img{width:100%;height:100%;object-fit:cover;transition:transform .4s;display:block}
   .card:hover .thumb img{transform:scale(1.06)}
@@ -75,14 +62,11 @@
   .tgrad{position:absolute;bottom:0;left:0;right:0;height:52%;background:linear-gradient(to top,rgba(8,11,20,.9),transparent);pointer-events:none;z-index:1}
   .tshim{position:absolute;inset:0;background:linear-gradient(105deg,transparent 40%,rgba(139,92,246,.055) 50%,transparent 60%);background-size:200% 100%;animation:sw 3.2s linear infinite;pointer-events:none;z-index:2}
   @keyframes sw{0%{background-position:200% 0}100%{background-position:-200% 0}}
-
   .blive{position:absolute;top:8px;left:8px;z-index:3;display:flex;align-items:center;gap:5px;padding:3px 8px;border-radius:4px;font-size:9px;font-weight:700;letter-spacing:1.1px;background:var(--red);color:#fff}
   .blive .d{width:5px;height:5px;border-radius:50%;background:#fff;animation:blink 1.4s infinite}
   .boff{position:absolute;top:8px;left:8px;z-index:3;padding:3px 8px;border-radius:4px;font-size:9px;font-weight:600;letter-spacing:.8px;background:rgba(10,14,28,.85);border:1px solid var(--bdr);color:var(--t3)}
   .bplat{position:absolute;top:8px;right:8px;z-index:3;width:20px;height:20px;border-radius:4px;display:grid;place-items:center;font-size:11px;font-weight:700;background:#9146ff;color:#fff}
   .vcnt{position:absolute;bottom:7px;right:9px;z-index:3;display:flex;align-items:center;gap:4px;font-size:11px;font-weight:600;color:#fff;text-shadow:0 1px 4px rgba(0,0,0,.9)}
-
-  /* INFO */
   .info{padding:10px 12px 12px}
   .meta{display:flex;align-items:center;gap:9px}
   .av{width:34px;height:34px;border-radius:50%;border:2px solid var(--ac);overflow:hidden;flex-shrink:0;background:var(--panel);display:grid;place-items:center;font-family:'Rajdhani',sans-serif;font-weight:700;font-size:13px;color:var(--acb)}
@@ -95,41 +79,28 @@
   .tgs{display:flex;gap:4px;margin-top:8px;flex-wrap:wrap}
   .tg{padding:2px 7px;border-radius:4px;font-size:10px;font-weight:500;background:rgba(139,92,246,.1);border:1px solid rgba(139,92,246,.18);color:var(--acb)}
   .tg.game{background:rgba(34,197,94,.08);border-color:rgba(34,197,94,.2);color:#86efac}
-
-  /* SKELETON */
+  .stats-link{font-size:11px;color:var(--ac);text-decoration:none;margin-top:6px;display:inline-block;opacity:.7;transition:opacity .2s}
+  .stats-link:hover{opacity:1}
   .skel{border-radius:11px;overflow:hidden;background:var(--card);border:1px solid var(--bdr);animation:fi .4s ease both}
   .skel-thumb{width:100%;aspect-ratio:16/9;background:linear-gradient(90deg,var(--panel) 25%,#161d30 50%,var(--panel) 75%);background-size:200% 100%;animation:shimmer 1.4s infinite}
   .skel-info{padding:10px 12px 12px;display:flex;flex-direction:column;gap:8px}
   .skel-line{height:12px;border-radius:4px;background:linear-gradient(90deg,var(--panel) 25%,#161d30 50%,var(--panel) 75%);background-size:200% 100%;animation:shimmer 1.4s infinite}
   @keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
-
-  /* ERROR */
-  .err-box{grid-column:1/-1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:50px 20px;gap:12px;text-align:center}
-  .err-box svg{opacity:.3}
-  .err-box h3{font-family:'Rajdhani',sans-serif;font-size:18px;color:var(--t2)}
-  .err-box p{font-size:13px;color:var(--t3);max-width:320px;line-height:1.6}
-  .err-box button{margin-top:8px;padding:8px 20px;background:var(--ac);border:none;border-radius:7px;color:#fff;font-family:'Rajdhani',sans-serif;font-size:14px;font-weight:700;cursor:pointer;letter-spacing:.5px}
-
-  /* LAST UPDATED */
-  #last-updated{font-size:11px;color:var(--t3);margin-left:auto;padding-right:4px}
+  #last-upd{font-size:11px;color:var(--t3);margin-left:4px}
 </style>
 </head>
 <body>
-
 <nav>
-  <a class="logo" href="#">
+  <a class="logo" href="index.html">
     <div class="logo-x">X</div>
     <span>X-Roleplay</span>
   </a>
   <div class="ntabs">
-    <div class="ntab on">Live Hub</div>
-    <div class="ntab">Creators</div>
-    <div class="ntab">Analytics</div>
-    <div class="ntab">Einstellungen</div>
+    <a class="ntab on"  href="index.html">Live Hub</a>
+    <a class="ntab"     href="analytics.html">Analytics</a>
   </div>
   <div class="pill"><div class="dot"></div>LIVE</div>
 </nav>
-
 <main>
   <div class="ph">
     <div>
@@ -141,7 +112,6 @@
       <div class="st"><div class="v" id="cnt-viewers">–</div><div class="l">Zuschauer</div></div>
     </div>
   </div>
-
   <div class="fbar">
     <button class="fb on" onclick="setF(this,'all')">Alle</button>
     <button class="fb"    onclick="setF(this,'live')">🔴 Live</button>
@@ -154,264 +124,107 @@
       </svg>
       Aktualisieren
     </button>
-    <span id="last-updated"></span>
+    <span id="last-upd"></span>
     <div class="srch">
       <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#64748b" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
       <input type="text" placeholder="Streamer suchen…" oninput="doSearch(this.value)">
     </div>
   </div>
-
   <div id="grid"></div>
 </main>
-
 <script>
-// ─────────────────────────────────────────────
-//  CONFIG
-// ─────────────────────────────────────────────
-const STREAMERS = [
-  { login:'dero_tv',        display:'Dero_TV',        tags:['GTA RP','Roleplay'],       ini:'DT' },
-  { login:'d3viigirl',      display:'D3viiGirl',       tags:['Just Chatting','IRL'],     ini:'DG' },
-  { login:'alessio_guzman', display:'Alessio_Guzman',  tags:['GTA RP','Action'],         ini:'AG' },
-  { login:'keanuzien',      display:'KeanuzieN',       tags:['GTA RP','Drama'],          ini:'KZ' },
-  { login:'reda__7272',     display:'Reda__7272',      tags:['Roleplay','Chat'],         ini:'RE' },
-  { login:'harryyyys',      display:'Harryyyys',       tags:['GTA RP','Chill'],          ini:'HA' },
-  { login:'tayo_rulo',      display:'Tayo_Rulo',       tags:['GTA RP','Roleplay'],       ini:'TR' },
-  { login:'dayiasena',      display:'Dayiasena',       tags:['Just Chatting','Variety'], ini:'DA' },
-  { login:'taypacino',      display:'TayPacino',       tags:['GTA RP','Crime'],          ini:'TP' },
-  { login:'bladinostv',     display:'BladinosTV',      tags:['GTA RP','Roleplay'],       ini:'BL' },
-  { login:'realneotv_nrw',  display:'RealNeoTV_NRW',   tags:['GTA RP','Roleplay'],       ini:'RN' },
+const STREAMERS=[
+  {login:'dero_tv',        display:'Dero_TV',        tags:['GTA RP','Roleplay'],       ini:'DT'},
+  {login:'d3viigirl',      display:'D3viiGirl',       tags:['Just Chatting','IRL'],     ini:'DG'},
+  {login:'alessio_guzman', display:'Alessio_Guzman',  tags:['GTA RP','Action'],         ini:'AG'},
+  {login:'keanuzien',      display:'KeanuzieN',       tags:['GTA RP','Drama'],          ini:'KZ'},
+  {login:'reda__7272',     display:'Reda__7272',      tags:['Roleplay','Chat'],         ini:'RE'},
+  {login:'harryyyys',      display:'Harryyyys',       tags:['GTA RP','Chill'],          ini:'HA'},
+  {login:'tayo_rulo',      display:'Tayo_Rulo',       tags:['GTA RP','Roleplay'],       ini:'TR'},
+  {login:'dayiasena',      display:'Dayiasena',       tags:['Just Chatting','Variety'], ini:'DA'},
+  {login:'taypacino',      display:'TayPacino',       tags:['GTA RP','Crime'],          ini:'TP'},
+  {login:'bladinostv',     display:'BladinosTV',      tags:['GTA RP','Roleplay'],       ini:'BL'},
+  {login:'realneotv_nrw',  display:'RealNeoTV_NRW',   tags:['GTA RP','Roleplay'],       ini:'RN'},
 ];
-
-// ─────────────────────────────────────────────
-//  STATE
-// ─────────────────────────────────────────────
-let clientId    = null;
-let token       = null;
-let streamData  = {};
-let userProfiles= {};
-let curFilter   = 'all';
-let curSearch   = '';
-
-// ─────────────────────────────────────────────
-//  INIT — fetch token from our own backend
-// ─────────────────────────────────────────────
-async function init() {
+let clientId=null,token=null,streamData={},userProfiles={},curFilter='all',curSearch='';
+function fv(n){return n>=1000?(n/1000).toFixed(1)+'K':n}
+async function init(){
   showSkeletons();
-  try {
-    const r    = await fetch('/api/token');
-    const data = await r.json();
-    if (!data.access_token) throw new Error('Kein Token');
-    token    = data.access_token;
-    clientId = data.client_id;
+  try{
+    const r=await fetch('/api/token');
+    const d=await r.json();
+    token=d.access_token; clientId=d.client_id;
     await loadAll();
     startAutoRefresh();
-  } catch(e) {
-    showError('Verbindungsfehler', 'Die API konnte nicht erreicht werden. Bitte Seite neu laden.');
-  }
+  }catch(e){showError();}
 }
-
-// ─────────────────────────────────────────────
-//  API
-// ─────────────────────────────────────────────
-async function twitchGet(url) {
-  const r = await fetch(url, {
-    headers: { 'Client-ID': clientId, 'Authorization': 'Bearer ' + token }
-  });
-  if (r.status === 401) {
-    // Token expired – refresh and retry once
-    await refreshToken();
-    return twitchGet(url);
-  }
-  if (!r.ok) throw new Error('API ' + r.status);
+async function twitchGet(url){
+  const r=await fetch(url,{headers:{'Client-ID':clientId,'Authorization':'Bearer '+token}});
+  if(r.status===401){const d=await(await fetch('/api/token')).json();token=d.access_token;clientId=d.client_id;return twitchGet(url);}
   return r.json();
 }
-
-async function refreshToken() {
-  const r    = await fetch('/api/token');
-  const data = await r.json();
-  token    = data.access_token;
-  clientId = data.client_id;
+async function loadAll(){
+  const q=STREAMERS.map(s=>'user_login='+s.login).join('&');
+  const d=await twitchGet(`https://api.twitch.tv/helix/streams?${q}&first=100`);
+  streamData={};
+  for(const s of d.data) streamData[s.user_login.toLowerCase()]=s;
+  if(!Object.keys(userProfiles).length){
+    const q2=STREAMERS.map(s=>'login='+s.login).join('&');
+    const d2=await twitchGet(`https://api.twitch.tv/helix/users?${q2}`);
+    for(const u of d2.data) userProfiles[u.login.toLowerCase()]=u;
+  }
+  // trigger tracking in background
+  fetch('/api/track').catch(()=>{});
+  render(); updateStats();
+  document.getElementById('last-upd').textContent='Zuletzt: '+new Date().toLocaleTimeString('de-DE',{hour:'2-digit',minute:'2-digit'})+' Uhr';
 }
-
-async function loadStreams() {
-  const q = STREAMERS.map(s => 'user_login=' + s.login).join('&');
-  const d = await twitchGet(`https://api.twitch.tv/helix/streams?${q}&first=100`);
-  streamData = {};
-  for (const s of d.data) streamData[s.user_login.toLowerCase()] = s;
-}
-
-async function loadUsers() {
-  if (Object.keys(userProfiles).length > 0) return;
-  const q = STREAMERS.map(s => 'login=' + s.login).join('&');
-  const d = await twitchGet(`https://api.twitch.tv/helix/users?${q}`);
-  for (const u of d.data) userProfiles[u.login.toLowerCase()] = u;
-}
-
-async function loadAll() {
-  await Promise.all([loadStreams(), loadUsers()]);
-  render();
-  updateStats();
-  updateTimestamp();
-}
-
-// ─────────────────────────────────────────────
-//  RENDER
-// ─────────────────────────────────────────────
-function fv(n){ return n >= 1000 ? (n/1000).toFixed(1)+'K' : n }
-
-function buildCard(s) {
-  const stream  = streamData[s.login] || null;
-  const live    = !!stream;
-  const profile = userProfiles[s.login] || {};
-  const name    = profile.display_name || s.display;
-  const avatar  = profile.profile_image_url || '';
-  const game    = stream?.game_name || '';
-  const title   = stream?.title    || '';
-  const viewers = stream?.viewer_count || 0;
-
-  const thumbHtml = live
-    ? `<img src="${stream.thumbnail_url.replace('{width}','640').replace('{height}','360')}?t=${Date.now()}" alt="${name}">`
-    : `<div class="tfall">
-         <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#8b5cf6" stroke-width="1.3">
-           <path d="M21 2H3v16h5v4l4-4h5l4-4V2z"/><line x1="9" y1="9" x2="9" y2="14"/><line x1="14" y1="9" x2="14" y2="14"/>
-         </svg>
-         <span>OFFLINE</span>
-       </div>`;
-
-  const avatarHtml = avatar
-    ? `<img src="${avatar}" alt="${name}" onerror="this.style.display='none';this.parentElement.textContent='${s.ini}'">`
-    : s.ini;
-
-  const allTags = game ? [game, ...s.tags] : s.tags;
-
-  return `
-<a class="card${live?'':' off'}"
-   href="https://www.twitch.tv/${s.login}"
-   target="_blank" rel="noopener"
-   data-login="${s.login}">
-  <div class="thumb">
-    ${thumbHtml}
-    <div class="tgrad"></div>
-    <div class="tshim"></div>
-    ${live
-      ? `<div class="blive"><div class="d"></div>LIVE</div>`
-      : `<div class="boff">OFFLINE</div>`}
+function buildCard(s){
+  const st=streamData[s.login]||null,live=!!st;
+  const prof=userProfiles[s.login]||{};
+  const name=prof.display_name||s.display;
+  const av=prof.profile_image_url||'';
+  const game=st?.game_name||'',title=st?.title||'',views=st?.viewer_count||0;
+  const thumbHtml=live
+    ?`<img src="${st.thumbnail_url.replace('{width}','640').replace('{height}','360')}?t=${Date.now()}" alt="${name}">`
+    :`<div class="tfall"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#8b5cf6" stroke-width="1.3"><path d="M21 2H3v16h5v4l4-4h5l4-4V2z"/><line x1="9" y1="9" x2="9" y2="14"/><line x1="14" y1="9" x2="14" y2="14"/></svg><span>OFFLINE</span></div>`;
+  const avHtml=av?`<img src="${av}" alt="${name}" onerror="this.style.display='none';this.parentElement.textContent='${s.ini}'">`:`${s.ini}`;
+  const allTags=game?[game,...s.tags]:s.tags;
+  return`<a class="card${live?'':' off'}" href="https://www.twitch.tv/${s.login}" target="_blank" rel="noopener">
+  <div class="thumb">${thumbHtml}<div class="tgrad"></div><div class="tshim"></div>
+    ${live?`<div class="blive"><div class="d"></div>LIVE</div>`:`<div class="boff">OFFLINE</div>`}
     <div class="bplat">T</div>
-    ${live ? `<div class="vcnt">
-      <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>
-      </svg>${fv(viewers)}</div>` : ''}
+    ${live?`<div class="vcnt"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>${fv(views)}</div>`:''}
   </div>
   <div class="info">
     <div class="meta">
-      <div class="av${live?' lr':''}">${avatarHtml}</div>
-      <div class="tx">
-        <div class="sn">${name}</div>
-        <div class="sg" title="${title}">${live ? (title || game || 'Twitch Stream') : 'Nicht live'}</div>
-      </div>
-      ${live ? `<div class="vb">
-        <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor">
-          <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/>
-          <path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/>
-        </svg>${fv(viewers)}</div>` : ''}
+      <div class="av${live?' lr':''}">${avHtml}</div>
+      <div class="tx"><div class="sn">${name}</div><div class="sg" title="${title}">${live?(title||game||'Twitch Stream'):'Nicht live'}</div></div>
+      ${live?`<div class="vb"><svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>${fv(views)}</div>`:''}
     </div>
-    <div class="tgs">
-      ${allTags.slice(0,3).map((t,i) =>
-        `<span class="tg${i===0&&live&&game?' game':''}">${t}</span>`
-      ).join('')}
-    </div>
+    <div class="tgs">${allTags.slice(0,3).map((t,i)=>`<span class="tg${i===0&&live&&game?' game':''}">${t}</span>`).join('')}</div>
+    <a class="stats-link" href="analytics.html?streamer=${s.login}" onclick="event.stopPropagation()">📊 Auswertung →</a>
   </div>
 </a>`;
 }
-
-function render() {
-  let list = [...STREAMERS];
-
-  // Live first, then sorted by viewers
-  list.sort((a,b) => {
-    const al = !!streamData[a.login], bl = !!streamData[b.login];
-    if (al !== bl) return bl - al;
-    return (streamData[b.login]?.viewer_count||0) - (streamData[a.login]?.viewer_count||0);
-  });
-
-  if (curFilter === 'live') list = list.filter(s =>  streamData[s.login]);
-  if (curFilter === 'off')  list = list.filter(s => !streamData[s.login]);
-  if (curSearch) list = list.filter(s =>
-    s.display.toLowerCase().includes(curSearch) || s.login.includes(curSearch)
-  );
-
-  const grid = document.getElementById('grid');
-  grid.innerHTML = list.length
-    ? list.map(buildCard).join('')
-    : `<div style="grid-column:1/-1;padding:55px;text-align:center;color:var(--t3);font-size:14px">
-         Keine Streamer gefunden.
-       </div>`;
+function render(){
+  let list=[...STREAMERS];
+  list.sort((a,b)=>{const al=!!streamData[a.login],bl=!!streamData[b.login];if(al!==bl)return bl-al;return(streamData[b.login]?.viewer_count||0)-(streamData[a.login]?.viewer_count||0);});
+  if(curFilter==='live')list=list.filter(s=>streamData[s.login]);
+  if(curFilter==='off')list=list.filter(s=>!streamData[s.login]);
+  if(curSearch)list=list.filter(s=>s.display.toLowerCase().includes(curSearch)||s.login.includes(curSearch));
+  document.getElementById('grid').innerHTML=list.length?list.map(buildCard).join(''):`<div style="grid-column:1/-1;padding:55px;text-align:center;color:var(--t3)">Keine Streamer gefunden.</div>`;
 }
-
-function updateStats() {
-  const live = STREAMERS.filter(s => streamData[s.login]);
-  const tv   = live.reduce((a,s) => a + (streamData[s.login]?.viewer_count||0), 0);
-  document.getElementById('cnt-live').textContent    = live.length;
-  document.getElementById('cnt-viewers').textContent = fv(tv) || '0';
+function updateStats(){
+  const live=STREAMERS.filter(s=>streamData[s.login]);
+  document.getElementById('cnt-live').textContent=live.length;
+  document.getElementById('cnt-viewers').textContent=fv(live.reduce((a,s)=>a+(streamData[s.login]?.viewer_count||0),0))||'0';
 }
-
-function updateTimestamp() {
-  const now = new Date();
-  document.getElementById('last-updated').textContent =
-    `Zuletzt: ${now.toLocaleTimeString('de-DE',{hour:'2-digit',minute:'2-digit'})} Uhr`;
-}
-
-function showSkeletons() {
-  document.getElementById('grid').innerHTML = Array.from({length:9}, (_,i) => `
-    <div class="skel" style="animation-delay:${i*0.04}s">
-      <div class="skel-thumb"></div>
-      <div class="skel-info">
-        <div class="skel-line" style="width:60%"></div>
-        <div class="skel-line" style="width:40%"></div>
-      </div>
-    </div>`).join('');
-}
-
-function showError(title, msg) {
-  document.getElementById('grid').innerHTML = `
-    <div class="err-box">
-      <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="#8b5cf6" stroke-width="1.3">
-        <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
-      </svg>
-      <h3>${title}</h3>
-      <p>${msg}</p>
-      <button onclick="location.reload()">Neu laden</button>
-    </div>`;
-}
-
-// ─────────────────────────────────────────────
-//  CONTROLS
-// ─────────────────────────────────────────────
-function setF(btn, val) {
-  document.querySelectorAll('.fb').forEach(b => b.classList.remove('on'));
-  btn.classList.add('on');
-  curFilter = val;
-  render();
-}
-
-function doSearch(v) { curSearch = v.toLowerCase(); render(); }
-
-async function doRefresh() {
-  const btn = document.getElementById('rbtn');
-  btn.classList.add('spin');
-  try { await loadAll(); } catch(e) { console.error(e); }
-  btn.classList.remove('spin');
-}
-
-function startAutoRefresh() {
-  setInterval(async () => {
-    try { await loadAll(); } catch(e) {}
-  }, 60000);
-}
-
-// ─────────────────────────────────────────────
-//  START
-// ─────────────────────────────────────────────
+function showSkeletons(){document.getElementById('grid').innerHTML=Array.from({length:11},(_,i)=>`<div class="skel" style="animation-delay:${i*.04}s"><div class="skel-thumb"></div><div class="skel-info"><div class="skel-line" style="width:60%"></div><div class="skel-line" style="width:40%"></div></div></div>`).join('');}
+function showError(){document.getElementById('grid').innerHTML=`<div style="grid-column:1/-1;padding:50px;text-align:center;color:var(--t3)">Verbindungsfehler – <button onclick="location.reload()" style="background:var(--ac);border:none;color:#fff;padding:6px 14px;border-radius:6px;cursor:pointer;font-family:Outfit,sans-serif">Neu laden</button></div>`;}
+function setF(btn,val){document.querySelectorAll('.fb').forEach(b=>b.classList.remove('on'));btn.classList.add('on');curFilter=val;render();}
+function doSearch(v){curSearch=v.toLowerCase();render();}
+async function doRefresh(){const btn=document.getElementById('rbtn');btn.classList.add('spin');try{await loadAll();}catch(e){}btn.classList.remove('spin');}
+function startAutoRefresh(){setInterval(async()=>{try{await loadAll();}catch(e){}},60000);}
 init();
 </script>
 </body>
