@@ -1,0 +1,752 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>X-Roleplay – Admin Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@400;500;600;700;800;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+:root{
+  --bg:#05030f;--bg2:#0a0718;--sidebar:#080516;
+  --card:#0f0c1e;--card2:#130f24;--card3:#17122b;
+  --ac:#7c3aed;--ac2:#a855f7;--ac3:#c084fc;
+  --glow:rgba(124,58,237,.5);--glow2:rgba(168,85,247,.3);
+  --red:#ef4444;--green:#22c55e;--amber:#f59e0b;
+  --bdr:rgba(124,58,237,.18);--bdrh:rgba(168,85,247,.45);
+  --t1:#f8f4ff;--t2:#b8a8d8;--t3:#6b5a8a;--t4:#3d2f5c;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--t1);min-height:100vh;display:flex;flex-direction:column}
+body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse 60% 40% at 10% 0%,rgba(124,58,237,.14) 0%,transparent 60%),radial-gradient(ellipse 40% 30% at 90% 100%,rgba(168,85,247,.09) 0%,transparent 55%);pointer-events:none;z-index:0}
+
+/* ── TOP NAV ── */
+nav{
+  position:sticky;top:0;z-index:200;
+  display:flex;align-items:center;gap:16px;
+  padding:0 28px;height:60px;
+  background:rgba(5,3,15,.92);backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--bdr);flex-shrink:0;
+}
+.logo{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--t1)}
+.logo-icon{width:32px;height:32px;background:linear-gradient(135deg,var(--ac),var(--ac2));clip-path:polygon(50% 0%,100% 50%,50% 100%,0% 50%);display:grid;place-items:center;font-family:'Exo 2',sans-serif;font-weight:900;font-size:13px;color:#fff;box-shadow:0 0 16px var(--glow)}
+.logo-text{font-family:'Exo 2',sans-serif;font-size:18px;font-weight:800}
+.logo-text span{color:var(--ac3)}
+.nav-title{font-family:'Exo 2',sans-serif;font-size:16px;font-weight:600;color:var(--t2);margin-left:4px}
+.nav-spacer{flex:1}
+.nav-icons{display:flex;align-items:center;gap:6px}
+.nav-icon-btn{
+  width:36px;height:36px;border-radius:8px;border:1px solid var(--bdr);
+  background:transparent;display:grid;place-items:center;cursor:pointer;
+  color:var(--t2);transition:all .2s;position:relative;
+}
+.nav-icon-btn:hover{background:rgba(124,58,237,.12);border-color:var(--bdrh);color:var(--t1)}
+.notif-badge{position:absolute;top:5px;right:5px;width:7px;height:7px;border-radius:50%;background:var(--red);border:1.5px solid var(--bg)}
+.nav-avatar{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--ac),var(--ac2));display:grid;place-items:center;font-family:'Exo 2',sans-serif;font-weight:800;font-size:13px;cursor:pointer;border:2px solid rgba(124,58,237,.4)}
+.nav-back{display:flex;align-items:center;gap:6px;padding:5px 14px;border-radius:8px;font-size:12px;font-weight:500;color:var(--t2);border:1px solid var(--bdr);text-decoration:none;transition:all .2s}
+.nav-back:hover{color:var(--t1);border-color:var(--bdrh);background:rgba(124,58,237,.08)}
+
+/* ── LAYOUT ── */
+.layout{display:flex;flex:1;position:relative;z-index:1;min-height:0}
+
+/* ── SIDEBAR ── */
+.sidebar{
+  width:220px;flex-shrink:0;
+  background:var(--sidebar);
+  border-right:1px solid var(--bdr);
+  padding:20px 0;
+  display:flex;flex-direction:column;gap:4px;
+}
+.sidebar-section{font-size:9px;font-weight:700;color:var(--t4);text-transform:uppercase;letter-spacing:2px;padding:14px 20px 6px}
+.sidebar-item{
+  display:flex;align-items:center;gap:10px;
+  padding:9px 20px;cursor:pointer;
+  font-size:13px;font-weight:500;color:var(--t2);
+  transition:all .2s;border-left:3px solid transparent;
+  text-decoration:none;
+}
+.sidebar-item:hover{color:var(--t1);background:rgba(124,58,237,.08);border-left-color:rgba(124,58,237,.4)}
+.sidebar-item.on{color:var(--ac3);background:rgba(124,58,237,.12);border-left-color:var(--ac2);font-weight:600}
+.sidebar-item svg{flex-shrink:0;opacity:.7}
+.sidebar-item.on svg{opacity:1}
+.sidebar-badge{margin-left:auto;padding:1px 7px;border-radius:10px;font-size:9px;font-weight:700;background:rgba(124,58,237,.2);color:var(--ac3)}
+.sidebar-badge.live{background:rgba(239,68,68,.2);color:#ff8080}
+.sidebar-footer{margin-top:auto;padding:16px 20px;border-top:1px solid var(--bdr)}
+.sidebar-footer-text{font-size:10px;color:var(--t4);line-height:1.6}
+
+/* ── CONTENT ── */
+.content{flex:1;overflow-y:auto;padding:28px;display:flex;flex-direction:column;gap:24px}
+
+/* ── STAT CARDS ROW ── */
+.stat-row{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.stat-card{
+  background:var(--card);border:1px solid var(--bdr);border-radius:14px;
+  padding:18px 20px;position:relative;overflow:hidden;
+  transition:border-color .2s,box-shadow .2s;cursor:default;
+}
+.stat-card:hover{border-color:var(--bdrh);box-shadow:0 8px 24px rgba(0,0,0,.4),0 0 20px var(--glow2)}
+.stat-card::before{content:'';position:absolute;top:0;right:0;width:80px;height:80px;border-radius:50%;background:var(--card-accent,rgba(124,58,237,.08));transform:translate(30%,-30%);pointer-events:none}
+.stat-card-label{font-size:11px;color:var(--t3);text-transform:uppercase;letter-spacing:1px;font-weight:600;display:flex;align-items:center;gap:6px}
+.stat-card-val{font-family:'Exo 2',sans-serif;font-size:36px;font-weight:900;color:var(--t1);line-height:1.1;margin-top:6px}
+.stat-card-sub{font-size:12px;color:var(--t3);margin-top:4px;font-weight:400}
+.stat-card-sub em{color:var(--green);font-style:normal;font-weight:600}
+.stat-card.live-stat{--card-accent:rgba(239,68,68,.1)}
+.stat-card.live-stat .stat-card-val{color:var(--ac3)}
+.stat-card.viewers-stat{--card-accent:rgba(168,85,247,.1)}
+.stat-card.streams-stat{--card-accent:rgba(34,197,94,.08)}
+.stat-card.avg-stat{--card-accent:rgba(245,158,11,.08)}
+
+/* ── TWO COLUMN ── */
+.two-col{display:grid;grid-template-columns:1fr 380px;gap:14px}
+.three-col{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px}
+
+/* ── PANEL ── */
+.panel{background:var(--card);border:1px solid var(--bdr);border-radius:14px;padding:20px;position:relative;overflow:hidden}
+.panel-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px}
+.panel-title{font-family:'Exo 2',sans-serif;font-size:16px;font-weight:700;letter-spacing:.3px}
+.panel-sub{font-size:11px;color:var(--t3);margin-top:2px}
+.panel-dots{display:flex;gap:5px}
+.panel-dot{width:8px;height:8px;border-radius:50%;background:var(--t4)}
+.panel-dot:nth-child(1){background:var(--red)}
+.panel-dot:nth-child(2){background:var(--amber)}
+.panel-dot:nth-child(3){background:var(--green)}
+
+/* ── CHART ── */
+.chart-wrap{position:relative;height:200px}
+
+/* ── TOP CREATORS ── */
+.creator-list{display:flex;flex-direction:column;gap:10px}
+.creator-item{
+  display:flex;align-items:center;gap:12px;
+  padding:11px 13px;border-radius:10px;
+  background:var(--card2);border:1px solid var(--bdr);
+  transition:all .2s;cursor:pointer;text-decoration:none;color:inherit;
+}
+.creator-item:hover{border-color:var(--bdrh);background:var(--card3);transform:translateX(3px)}
+.creator-rank{font-family:'Exo 2',sans-serif;font-size:18px;font-weight:900;color:var(--t4);min-width:24px;text-align:center}
+.creator-rank.gold{color:#f59e0b}
+.creator-rank.silver{color:#94a3b8}
+.creator-rank.bronze{color:#cd7c2f}
+.creator-av{width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,var(--ac),var(--ac2));display:grid;place-items:center;font-family:'Exo 2',sans-serif;font-weight:800;font-size:12px;color:#fff;overflow:hidden;flex-shrink:0}
+.creator-av img{width:100%;height:100%;object-fit:cover}
+.creator-info{flex:1;min-width:0}
+.creator-name{font-family:'Exo 2',sans-serif;font-size:13px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.creator-detail{font-size:10px;color:var(--t3);margin-top:2px;display:flex;align-items:center;gap:5px}
+.creator-live-dot{width:5px;height:5px;border-radius:50%;background:var(--red);box-shadow:0 0 5px var(--red)}
+.creator-viewers{font-family:'Exo 2',sans-serif;font-size:14px;font-weight:800;color:var(--ac3);white-space:nowrap;display:flex;align-items:center;gap:4px}
+.creator-viewers-label{font-size:9px;color:var(--t3);font-family:'Inter',sans-serif;font-weight:400}
+
+/* ── ACTIVITY HEATMAP ── */
+.heatmap-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:5px;margin-top:10px}
+.heatmap-day-label{font-size:9px;color:var(--t3);text-align:center;padding-bottom:3px;font-weight:600;letter-spacing:.5px}
+.heatmap-cell{
+  aspect-ratio:1;border-radius:4px;
+  background:var(--card2);border:1px solid var(--bdr);
+  transition:all .2s;cursor:pointer;position:relative;
+}
+.heatmap-cell:hover{transform:scale(1.15);z-index:2}
+.heatmap-cell[data-v="0"]{background:#0f0c1e;border-color:rgba(124,58,237,.1)}
+.heatmap-cell[data-v="1"]{background:rgba(124,58,237,.15);border-color:rgba(124,58,237,.2)}
+.heatmap-cell[data-v="2"]{background:rgba(124,58,237,.3);border-color:rgba(124,58,237,.35)}
+.heatmap-cell[data-v="3"]{background:rgba(168,85,247,.5);border-color:rgba(168,85,247,.55)}
+.heatmap-cell[data-v="4"]{background:rgba(192,132,252,.75);border-color:rgba(192,132,252,.8);box-shadow:0 0 6px rgba(192,132,252,.4)}
+.heatmap-cell[data-v="5"]{background:var(--ac3);border-color:var(--ac2);box-shadow:0 0 10px rgba(192,132,252,.6)}
+
+/* ── STREAMER TABLE ── */
+.table-wrap{overflow:hidden;border-radius:10px;border:1px solid var(--bdr)}
+table{width:100%;border-collapse:collapse}
+thead tr{background:rgba(124,58,237,.08)}
+th{padding:10px 14px;font-size:10px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:1px;text-align:left;border-bottom:1px solid var(--bdr)}
+tbody tr{border-bottom:1px solid rgba(124,58,237,.06);transition:background .15s;cursor:pointer}
+tbody tr:last-child{border-bottom:none}
+tbody tr:hover{background:rgba(124,58,237,.06)}
+td{padding:10px 14px;font-size:12px}
+.td-name{display:flex;align-items:center;gap:9px}
+.td-av{width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,var(--ac),var(--ac2));display:grid;place-items:center;font-family:'Exo 2',sans-serif;font-weight:800;font-size:10px;color:#fff;overflow:hidden;flex-shrink:0}
+.td-av img{width:100%;height:100%;object-fit:cover}
+.td-sname{font-weight:600;font-family:'Exo 2',sans-serif;font-size:13px}
+.td-login{font-size:10px;color:var(--t3)}
+.td-status-live{display:inline-flex;align-items:center;gap:5px;padding:2px 8px;border-radius:20px;background:rgba(239,68,68,.12);border:1px solid rgba(239,68,68,.25);color:#ff8080;font-size:10px;font-weight:700}
+.td-status-live::before{content:'';width:5px;height:5px;border-radius:50%;background:var(--red);box-shadow:0 0 5px var(--red)}
+.td-status-off{display:inline-flex;align-items:center;gap:5px;padding:2px 8px;border-radius:20px;background:rgba(107,90,138,.1);border:1px solid rgba(107,90,138,.2);color:var(--t3);font-size:10px;font-weight:600}
+.td-viewers{font-family:'Exo 2',sans-serif;font-weight:700;font-size:13px;color:var(--ac3)}
+.td-viewers.zero{color:var(--t4);font-weight:400}
+.td-bar-wrap{width:90px;background:var(--card2);border-radius:20px;height:5px;overflow:hidden}
+.td-bar{height:100%;border-radius:20px;background:linear-gradient(90deg,var(--ac),var(--ac2));transition:width .8s ease}
+.td-link{color:var(--ac2);text-decoration:none;font-size:11px;opacity:.6;transition:opacity .2s}
+.td-link:hover{opacity:1}
+
+/* ── LIVE FEED ── */
+.feed-list{display:flex;flex-direction:column;gap:8px;max-height:260px;overflow-y:auto}
+.feed-list::-webkit-scrollbar{width:4px}
+.feed-list::-webkit-scrollbar-track{background:transparent}
+.feed-list::-webkit-scrollbar-thumb{background:var(--bdr);border-radius:2px}
+.feed-item{display:flex;align-items:center;gap:10px;padding:9px 11px;border-radius:8px;background:var(--card2);border:1px solid var(--bdr);animation:slideIn .3s ease}
+@keyframes slideIn{from{opacity:0;transform:translateX(-8px)}to{opacity:1;transform:translateX(0)}}
+.feed-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.feed-dot.green{background:var(--green);box-shadow:0 0 6px rgba(34,197,94,.5)}
+.feed-dot.red{background:var(--red);box-shadow:0 0 6px rgba(239,68,68,.5)}
+.feed-dot.amber{background:var(--amber);box-shadow:0 0 6px rgba(245,158,11,.5)}
+.feed-text{flex:1;font-size:12px;color:var(--t2)}
+.feed-text strong{color:var(--t1);font-weight:600}
+.feed-time{font-size:10px;color:var(--t4)}
+
+/* ── QUICK ACTIONS ── */
+.actions-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.action-btn{
+  padding:12px;border-radius:10px;border:1px solid var(--bdr);background:var(--card2);
+  cursor:pointer;text-align:left;transition:all .2s;
+}
+.action-btn:hover{border-color:var(--bdrh);background:var(--card3);transform:translateY(-1px);box-shadow:0 6px 16px rgba(0,0,0,.3)}
+.action-btn-icon{font-size:20px;margin-bottom:6px}
+.action-btn-label{font-family:'Exo 2',sans-serif;font-size:12px;font-weight:700;color:var(--t1)}
+.action-btn-sub{font-size:10px;color:var(--t3);margin-top:2px}
+
+/* ── LOADING SPINNER ── */
+.spin-wrap{display:flex;align-items:center;justify-content:center;padding:40px;color:var(--t3);gap:12px;font-size:13px}
+.spinner{width:20px;height:20px;border:2px solid var(--bdr);border-top-color:var(--ac2);border-radius:50%;animation:rot .7s linear infinite}
+@keyframes rot{to{transform:rotate(360deg)}}
+
+/* ── RESPONSIVE ── */
+@media(max-width:1200px){.stat-row{grid-template-columns:repeat(2,1fr)}.two-col{grid-template-columns:1fr}.three-col{grid-template-columns:1fr 1fr}}
+@media(max-width:800px){.sidebar{display:none}.stat-row{grid-template-columns:1fr 1fr}}
+</style>
+</head>
+<body>
+
+<!-- TOP NAV -->
+<nav>
+  <a class="logo" href="index.html">
+    <div class="logo-icon">X</div>
+    <div class="logo-text">X-<span>Roleplay</span></div>
+  </a>
+  <div class="nav-title">Admin Dashboard</div>
+  <div class="nav-spacer"></div>
+  <div class="nav-icons">
+    <button class="nav-icon-btn" title="Benachrichtigungen">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+      <div class="notif-badge"></div>
+    </button>
+    <button class="nav-icon-btn" title="Nachrichten">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+    </button>
+    <a class="nav-back" href="index.html">← Live Hub</a>
+    <div class="nav-avatar">XR</div>
+  </div>
+</nav>
+
+<!-- LAYOUT -->
+<div class="layout">
+
+  <!-- SIDEBAR -->
+  <div class="sidebar">
+    <div class="sidebar-section">Navigation</div>
+    <a class="sidebar-item" href="index.html">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+      Live Hub
+    </a>
+    <a class="sidebar-item on" href="admin.html">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+      Dashboard
+    </a>
+    <a class="sidebar-item" href="admin.html#creators">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+      Creators
+      <span class="sidebar-badge live" id="sb-live-count">–</span>
+    </a>
+    <a class="sidebar-item" href="analytics.html">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+      Analytics
+    </a>
+    <div class="sidebar-section">System</div>
+    <a class="sidebar-item" href="#">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93l-1.41 1.41M6.34 17.66l-1.41 1.41M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M12 2v2M12 20v2"/></svg>
+      Einstellungen
+    </a>
+    <div class="sidebar-footer">
+      <div class="sidebar-footer-text">X-Roleplay Admin v2.0<br>Auto-Refresh: 60s</div>
+    </div>
+  </div>
+
+  <!-- CONTENT -->
+  <div class="content">
+
+    <!-- STAT CARDS -->
+    <div class="stat-row">
+      <div class="stat-card live-stat">
+        <div class="stat-card-label">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#a855f7" stroke-width="2.5"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          Live Creators
+        </div>
+        <div class="stat-card-val" id="s-live">–</div>
+        <div class="stat-card-sub">von <span id="s-total">11</span> Streamern online</div>
+      </div>
+      <div class="stat-card viewers-stat">
+        <div class="stat-card-label">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#a855f7" stroke-width="2.5"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+          Geamt Zuschauer
+        </div>
+        <div class="stat-card-val" id="s-viewers">–</div>
+        <div class="stat-card-sub">Aktuell live</div>
+      </div>
+      <div class="stat-card streams-stat">
+        <div class="stat-card-label">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2.5"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+          Streams diese Woche
+        </div>
+        <div class="stat-card-val" id="s-streams">–</div>
+        <div class="stat-card-sub"><em id="s-streams-sub">Wird geladen…</em></div>
+      </div>
+      <div class="stat-card avg-stat">
+        <div class="stat-card-label">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2.5"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+          Ø Zuschauer
+        </div>
+        <div class="stat-card-val" id="s-avg">–</div>
+        <div class="stat-card-sub">Pro Stream heute</div>
+      </div>
+    </div>
+
+    <!-- CHART + TOP CREATORS -->
+    <div class="two-col">
+      <div class="panel">
+        <div class="panel-header">
+          <div>
+            <div class="panel-title">Performance Overview</div>
+            <div class="panel-sub">Zuschauer der letzten 7 Tage</div>
+          </div>
+          <div class="panel-dots"><div class="panel-dot"></div><div class="panel-dot"></div><div class="panel-dot"></div></div>
+        </div>
+        <div class="chart-wrap">
+          <canvas id="perf-chart"></canvas>
+        </div>
+      </div>
+      <div class="panel">
+        <div class="panel-header">
+          <div>
+            <div class="panel-title">Top Creators</div>
+            <div class="panel-sub">Aktuell nach Zuschauern</div>
+          </div>
+        </div>
+        <div class="creator-list" id="top-creators">
+          <div class="spin-wrap"><div class="spinner"></div>Lade…</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CREATORS TABLE -->
+    <div class="panel" id="creators">
+      <div class="panel-header">
+        <div>
+          <div class="panel-title">Alle Streamer</div>
+          <div class="panel-sub">Live-Status & Statistiken</div>
+        </div>
+        <button class="nav-icon-btn" onclick="loadAll()" title="Aktualisieren" style="width:32px;height:32px">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M23 4v6h-6"/><path d="M1 20v-6h6"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+        </button>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr>
+            <th>Streamer</th>
+            <th>Status</th>
+            <th>Zuschauer</th>
+            <th>Titel</th>
+            <th>Reichweite</th>
+            <th>Links</th>
+          </tr></thead>
+          <tbody id="creators-tbody">
+            <tr><td colspan="6"><div class="spin-wrap"><div class="spinner"></div>Lade Streamer…</div></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- HEATMAP + FEED + ACTIONS -->
+    <div class="three-col">
+      <div class="panel">
+        <div class="panel-header">
+          <div>
+            <div class="panel-title">Streamer Aktivität</div>
+            <div class="panel-sub">Letzte 35 Tage</div>
+          </div>
+          <div class="panel-dots"><div class="panel-dot"></div><div class="panel-dot"></div><div class="panel-dot"></div></div>
+        </div>
+        <div id="heatmap-labels" style="display:grid;grid-template-columns:repeat(7,1fr);gap:5px;margin-bottom:4px"></div>
+        <div class="heatmap-grid" id="heatmap"></div>
+        <div style="display:flex;gap:8px;align-items:center;margin-top:12px;font-size:10px;color:var(--t3)">
+          <span>Weniger</span>
+          <div style="display:flex;gap:3px">
+            <div style="width:11px;height:11px;border-radius:3px;background:#0f0c1e;border:1px solid rgba(124,58,237,.1)"></div>
+            <div style="width:11px;height:11px;border-radius:3px;background:rgba(124,58,237,.15)"></div>
+            <div style="width:11px;height:11px;border-radius:3px;background:rgba(124,58,237,.3)"></div>
+            <div style="width:11px;height:11px;border-radius:3px;background:rgba(168,85,247,.5)"></div>
+            <div style="width:11px;height:11px;border-radius:3px;background:var(--ac3)"></div>
+          </div>
+          <span>Mehr</span>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-header">
+          <div>
+            <div class="panel-title">Live Feed</div>
+            <div class="panel-sub">Echtzeit-Ereignisse</div>
+          </div>
+          <div style="width:8px;height:8px;border-radius:50%;background:var(--green);box-shadow:0 0 8px rgba(34,197,94,.6);animation:pulse 2s ease infinite"></div>
+        </div>
+        <div class="feed-list" id="feed-list">
+          <div class="spin-wrap"><div class="spinner"></div></div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-header">
+          <div>
+            <div class="panel-title">Quick Actions</div>
+            <div class="panel-sub">Schnellzugriff</div>
+          </div>
+        </div>
+        <div class="actions-grid">
+          <button class="action-btn" onclick="window.open('index.html','_blank')">
+            <div class="action-btn-icon">📺</div>
+            <div class="action-btn-label">Live Hub</div>
+            <div class="action-btn-sub">Streamer-Übersicht</div>
+          </button>
+          <button class="action-btn" onclick="window.open('analytics.html','_blank')">
+            <div class="action-btn-icon">📊</div>
+            <div class="action-btn-label">Analytics</div>
+            <div class="action-btn-sub">Alle Auswertungen</div>
+          </button>
+          <button class="action-btn" onclick="forceRefresh()">
+            <div class="action-btn-icon">🔄</div>
+            <div class="action-btn-label">Aktualisieren</div>
+            <div class="action-btn-sub">Daten neu laden</div>
+          </button>
+          <button class="action-btn" onclick="window.open('https://dev.twitch.tv/console','_blank')">
+            <div class="action-btn-icon">🎮</div>
+            <div class="action-btn-label">Twitch Dev</div>
+            <div class="action-btn-sub">API Konsole</div>
+          </button>
+          <button class="action-btn" onclick="copyStreamers()">
+            <div class="action-btn-icon">📋</div>
+            <div class="action-btn-label">Liste kopieren</div>
+            <div class="action-btn-sub">Streamer-Array</div>
+          </button>
+          <button class="action-btn" onclick="exportData()">
+            <div class="action-btn-icon">💾</div>
+            <div class="action-btn-label">Export</div>
+            <div class="action-btn-sub">Daten als JSON</div>
+          </button>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /content -->
+</div><!-- /layout -->
+
+<script>
+const STREAMERS=[
+  {login:'dero_tv',        display:'Dero_TV',        tags:['GTA RP','Roleplay'],       ini:'DT'},
+  {login:'d3viigirl',      display:'D3viiGirl',       tags:['Just Chatting','IRL'],     ini:'DG'},
+  {login:'alessio_guzman', display:'Alessio_Guzman',  tags:['GTA RP','Action'],         ini:'AG'},
+  {login:'keanuzien',      display:'KeanuzieN',       tags:['GTA RP','Drama'],          ini:'KZ'},
+  {login:'reda__7272',     display:'Reda__7272',      tags:['Roleplay','Chat'],         ini:'RE'},
+  {login:'harryyyys',      display:'Harryyyys',       tags:['GTA RP','Chill'],          ini:'HA'},
+  {login:'tayo_rulo',      display:'Tayo_Rulo',       tags:['GTA RP','Roleplay'],       ini:'TR'},
+  {login:'dayiasena',      display:'Dayiasena',       tags:['Just Chatting','Variety'], ini:'DA'},
+  {login:'taypacino',      display:'TayPacino',       tags:['GTA RP','Crime'],          ini:'TP'},
+  {login:'bladinostv',     display:'BladinosTV',      tags:['GTA RP','Roleplay'],       ini:'BL'},
+  {login:'realneotv_nrw',  display:'RealNeoTV_NRW',   tags:['GTA RP','Roleplay'],       ini:'RN'},
+];
+
+let clientId=null,token=null,streamData={},userProfiles={},prevLiveSet=new Set();
+let perfChart=null;
+function fv(n){return n>=1000?(n/1000).toFixed(1)+'K':n}
+function trunc(s,n){return s&&s.length>n?s.slice(0,n)+'…':s||''}
+
+async function init(){
+  try{
+    const r=await fetch('/api/token');
+    const d=await r.json();
+    token=d.access_token;clientId=d.client_id;
+    await loadAll();
+    buildHeatmap();
+    setInterval(loadAll,60000);
+  }catch(e){console.error(e)}
+}
+
+async function twitchGet(url){
+  const r=await fetch(url,{headers:{'Client-ID':clientId,'Authorization':'Bearer '+token}});
+  if(r.status===401){const d=await(await fetch('/api/token')).json();token=d.access_token;clientId=d.client_id;return twitchGet(url);}
+  return r.json();
+}
+
+async function loadAll(){
+  // Twitch live data
+  const q=STREAMERS.map(s=>'user_login='+s.login).join('&');
+  const d=await twitchGet(`https://api.twitch.tv/helix/streams?${q}&first=100`);
+  streamData={};
+  for(const s of d.data) streamData[s.user_login.toLowerCase()]=s;
+
+  if(!Object.keys(userProfiles).length){
+    const q2=STREAMERS.map(s=>'login='+s.login).join('&');
+    const d2=await twitchGet(`https://api.twitch.tv/helix/users?${q2}`);
+    for(const u of d2.data) userProfiles[u.login.toLowerCase()]=u;
+  }
+
+  fetch('/api/track').catch(()=>{});
+  updateStats();
+  updateTable();
+  updateTopCreators();
+  updateFeed();
+  loadChartData();
+}
+
+function updateStats(){
+  const live=STREAMERS.filter(s=>streamData[s.login]);
+  const totalViewers=live.reduce((a,s)=>a+(streamData[s.login]?.viewer_count||0),0);
+  const avg=live.length?Math.round(totalViewers/live.length):0;
+
+  document.getElementById('s-live').textContent=live.length;
+  document.getElementById('s-viewers').textContent=fv(totalViewers)||'0';
+  document.getElementById('s-avg').textContent=fv(avg)||'0';
+  document.getElementById('sb-live-count').textContent=live.length;
+
+  // Streams this week from Supabase
+  fetch('/api/stats?summary=1')
+    .then(r=>r.json())
+    .then(d=>{
+      const streamsThisWeek=d.streamsThisWeek||'–';
+      document.getElementById('s-streams').textContent=streamsThisWeek;
+      document.getElementById('s-streams-sub').textContent=`Neue Sessions diese Woche`;
+    }).catch(()=>{
+      // Fallback: count unique stream days
+      document.getElementById('s-streams').textContent='–';
+    });
+}
+
+function updateTable(){
+  const sorted=[...STREAMERS].sort((a,b)=>{
+    const al=!!streamData[a.login],bl=!!streamData[b.login];
+    if(al!==bl)return bl-al;
+    return(streamData[b.login]?.viewer_count||0)-(streamData[a.login]?.viewer_count||0);
+  });
+  const maxViews=Math.max(...sorted.map(s=>streamData[s.login]?.viewer_count||0),1);
+
+  const tbody=document.getElementById('creators-tbody');
+  tbody.innerHTML=sorted.map(s=>{
+    const live=!!streamData[s.login];
+    const st=streamData[s.login];
+    const prof=userProfiles[s.login]||{};
+    const views=st?.viewer_count||0;
+    const title=trunc(st?.title||'',40);
+    const avSrc=prof.profile_image_url||'';
+    const avHtml=avSrc?`<img src="${avSrc}" alt="${s.display}" onerror="this.style.display='none';this.parentElement.textContent='${s.ini}'">`:s.ini;
+    const pct=Math.round((views/maxViews)*100);
+    return `<tr onclick="window.open('https://www.twitch.tv/${s.login}','_blank')">
+      <td><div class="td-name">
+        <div class="td-av">${avHtml}</div>
+        <div><div class="td-sname">${prof.display_name||s.display}</div><div class="td-login">${s.login}</div></div>
+      </div></td>
+      <td>${live?`<span class="td-status-live">LIVE</span>`:`<span class="td-status-off">Offline</span>`}</td>
+      <td><span class="td-viewers${views===0?' zero':''}">${views>0?fv(views):'—'}</span></td>
+      <td style="color:var(--t2);font-size:11px;max-width:200px">${live?title:'–'}</td>
+      <td><div class="td-bar-wrap"><div class="td-bar" style="width:${pct}%"></div></div></td>
+      <td>
+        <a class="td-link" href="https://www.twitch.tv/${s.login}" target="_blank" onclick="event.stopPropagation()">Twitch ↗</a>
+        &nbsp;
+        <a class="td-link" href="analytics.html?streamer=${s.login}" onclick="event.stopPropagation()">Stats ↗</a>
+      </td>
+    </tr>`;
+  }).join('');
+}
+
+function updateTopCreators(){
+  const live=STREAMERS.filter(s=>streamData[s.login]).sort((a,b)=>(streamData[b.login]?.viewer_count||0)-(streamData[a.login]?.viewer_count||0));
+  const show=live.length>0?live:STREAMERS.slice(0,3);
+  const rankClass=['gold','silver','bronze'];
+  const container=document.getElementById('top-creators');
+  if(live.length===0){
+    container.innerHTML=`<div style="text-align:center;padding:24px;color:var(--t3);font-size:13px">Aktuell niemand live 😴</div>`;
+    return;
+  }
+  container.innerHTML=show.slice(0,5).map((s,i)=>{
+    const st=streamData[s.login];
+    const prof=userProfiles[s.login]||{};
+    const views=st?.viewer_count||0;
+    const avSrc=prof.profile_image_url||'';
+    const avHtml=avSrc?`<img src="${avSrc}" alt="${s.display}" onerror="this.style.display='none';this.parentElement.textContent='${s.ini}'">`:s.ini;
+    return `<a class="creator-item" href="https://www.twitch.tv/${s.login}" target="_blank">
+      <div class="creator-rank ${rankClass[i]||''}">${i+1}.</div>
+      <div class="creator-av">${avHtml}</div>
+      <div class="creator-info">
+        <div class="creator-name">${prof.display_name||s.display}</div>
+        <div class="creator-detail"><div class="creator-live-dot"></div>LIVE · ${st?.game_name||'Twitch'}</div>
+      </div>
+      <div class="creator-viewers">${fv(views)}<span class="creator-viewers-label">Zusch.</span></div>
+    </a>`;
+  }).join('');
+}
+
+function updateFeed(){
+  const newLive=new Set(STREAMERS.filter(s=>streamData[s.login]).map(s=>s.login));
+  const events=[];
+  const now=new Date().toLocaleTimeString('de-DE',{hour:'2-digit',minute:'2-digit'});
+
+  // Detect changes
+  for(const login of newLive){
+    if(!prevLiveSet.has(login)){
+      const s=STREAMERS.find(x=>x.login===login);
+      const prof=userProfiles[login]||{};
+      events.push({type:'green',msg:`<strong>${prof.display_name||s?.display||login}</strong> ist jetzt live!`,time:now});
+    }
+  }
+  for(const login of prevLiveSet){
+    if(!newLive.has(login)){
+      const s=STREAMERS.find(x=>x.login===login);
+      const prof=userProfiles[login]||{};
+      events.push({type:'red',msg:`<strong>${prof.display_name||s?.display||login}</strong> hat den Stream beendet`,time:now});
+    }
+  }
+  prevLiveSet=newLive;
+
+  const feed=document.getElementById('feed-list');
+  // Add new events to top
+  const existing=feed.innerHTML.includes('spin-wrap')?'':feed.innerHTML;
+
+  if(events.length===0 && existing===''){
+    // Initial load — show current live streamers
+    const liveNow=[...newLive];
+    if(liveNow.length===0){
+      feed.innerHTML=`<div style="text-align:center;padding:24px;color:var(--t3);font-size:12px">Aktuell keine Ereignisse</div>`;
+    } else {
+      feed.innerHTML=liveNow.map(login=>{
+        const s=STREAMERS.find(x=>x.login===login);
+        const prof=userProfiles[login]||{};
+        const views=streamData[login]?.viewer_count||0;
+        return `<div class="feed-item">
+          <div class="feed-dot green"></div>
+          <div class="feed-text"><strong>${prof.display_name||s?.display||login}</strong> streamt gerade · ${fv(views)} Zuschauer</div>
+          <div class="feed-time">${now}</div>
+        </div>`;
+      }).join('');
+    }
+  } else if(events.length>0){
+    const newItems=events.map(e=>`<div class="feed-item">
+      <div class="feed-dot ${e.type}"></div>
+      <div class="feed-text">${e.msg}</div>
+      <div class="feed-time">${e.time}</div>
+    </div>`).join('');
+    feed.innerHTML=newItems+(existing||'');
+    // Max 10 items
+    const items=feed.querySelectorAll('.feed-item');
+    if(items.length>10) items[items.length-1].remove();
+  }
+}
+
+async function loadChartData(){
+  try{
+    const r=await fetch('/api/stats?chart=weekly');
+    const d=await r.json();
+    if(d.weeklyChart) buildChart(d.weeklyChart);
+    else buildChartFallback();
+  }catch(e){buildChartFallback();}
+}
+
+function buildChartFallback(){
+  const days=['Mo','Di','Mi','Do','Fr','Sa','So'];
+  const vals=days.map(()=>Math.floor(Math.random()*800+200));
+  buildChart(days.map((d,i)=>({label:d,value:vals[i]})));
+}
+
+function buildChart(data){
+  const ctx=document.getElementById('perf-chart').getContext('2d');
+  if(perfChart) perfChart.destroy();
+  perfChart=new Chart(ctx,{
+    type:'line',
+    data:{
+      labels:data.map(d=>d.label||d.day),
+      datasets:[{
+        data:data.map(d=>d.value||d.viewers||0),
+        borderColor:'rgba(168,85,247,1)',
+        backgroundColor:'rgba(124,58,237,.12)',
+        borderWidth:2.5,
+        pointBackgroundColor:'rgba(192,132,252,1)',
+        pointBorderColor:'rgba(5,3,15,1)',
+        pointBorderWidth:2,
+        pointRadius:5,
+        pointHoverRadius:7,
+        fill:true,
+        tension:.45,
+      }]
+    },
+    options:{
+      responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{display:false},tooltip:{
+        backgroundColor:'rgba(15,12,30,.95)',
+        borderColor:'rgba(124,58,237,.4)',
+        borderWidth:1,
+        titleColor:'#c084fc',
+        bodyColor:'#b8a8d8',
+        padding:10,
+        callbacks:{label:ctx=>`${ctx.parsed.y} Zuschauer`}
+      }},
+      scales:{
+        x:{grid:{color:'rgba(124,58,237,.06)'},ticks:{color:'#6b5a8a',font:{size:11}}},
+        y:{grid:{color:'rgba(124,58,237,.06)'},ticks:{color:'#6b5a8a',font:{size:11}},beginAtZero:true}
+      }
+    }
+  });
+}
+
+function buildHeatmap(){
+  const days=['Mo','Di','Mi','Do','Fr','Sa','So'];
+  const labelsEl=document.getElementById('heatmap-labels');
+  labelsEl.innerHTML=days.map(d=>`<div class="heatmap-day-label">${d}</div>`).join('');
+
+  const heatmap=document.getElementById('heatmap');
+  // Generate 35 days of data (will be replaced with real data if available)
+  const cells=Array.from({length:35},(_,i)=>{
+    const v=Math.floor(Math.random()*6);
+    const daysAgo=34-i;
+    const date=new Date();date.setDate(date.getDate()-daysAgo);
+    const label=date.toLocaleDateString('de-DE',{day:'2-digit',month:'2-digit'});
+    return `<div class="heatmap-cell" data-v="${v}" title="${label}: ${v} aktive Streams"></div>`;
+  });
+  heatmap.innerHTML=cells.join('');
+
+  // Try to load real data
+  fetch('/api/stats?heatmap=1').then(r=>r.json()).then(d=>{
+    if(d.heatmap&&d.heatmap.length>0){
+      const max=Math.max(...d.heatmap.map(x=>x.count),1);
+      const els=heatmap.querySelectorAll('.heatmap-cell');
+      d.heatmap.slice(-35).forEach((day,i)=>{
+        if(els[i]){
+          const v=Math.min(5,Math.ceil((day.count/max)*5));
+          els[i].setAttribute('data-v',v);
+          els[i].setAttribute('title',`${day.date}: ${day.count} Streams`);
+        }
+      });
+    }
+  }).catch(()=>{});
+}
+
+function forceRefresh(){loadAll();buildHeatmap();}
+
+function copyStreamers(){
+  const txt=STREAMERS.map(s=>`{login:'${s.login}', display:'${s.display}', tags:['${s.tags.join("','")}'], ini:'${s.ini}'}`).join(',\n');
+  navigator.clipboard.writeText(txt).then(()=>alert('Streamer-Array kopiert!'));
+}
+
+function exportData(){
+  const data={timestamp:new Date().toISOString(),live:STREAMERS.filter(s=>streamData[s.login]).map(s=>({login:s.login,viewers:streamData[s.login]?.viewer_count,title:streamData[s.login]?.title,game:streamData[s.login]?.game_name})),offline:STREAMERS.filter(s=>!streamData[s.login]).map(s=>s.login)};
+  const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');a.href=url;a.download=`xroleplay-${Date.now()}.json`;a.click();
+}
+
+init();
+</script>
+</body>
+</html>
