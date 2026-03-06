@@ -4,8 +4,7 @@ const TWITCH_CLIENT_ID     = process.env.TWITCH_CLIENT_ID;
 const TWITCH_CLIENT_SECRET = process.env.TWITCH_CLIENT_SECRET;
 
 const STREAMERS = [
-  'dero_tv','d3viigirl','alessio_guzman','keanuzien','reda__7272',
-  'harryyyys','tayo_rulo','dayiasena','taypacino','bladinostv','realneotv_nrw'
+'dero_tv_','d3viigirl','alessio_guzman','keanuzien','reda__7272','harryyyys','tayo_rulo','dayiasena','taypacino','bladinostv','realneotv_nrw','xCihad61','xCihad61','rachidbounouar','denob07','ausrastenistmeinhobby','palmenspringer'
 ];
 
 async function getTwitchToken() {
