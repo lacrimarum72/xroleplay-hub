@@ -1,5 +1,4 @@
 export default async function handler(req, res) {
-  // Allow requests from your own site only
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET');
 
@@ -17,12 +16,7 @@ export default async function handler(req, res) {
     );
     const data = await r.json();
     if (!data.access_token) throw new Error('No token');
-
-    // Return token + client_id so the frontend can use them
-    res.status(200).json({
-      access_token: data.access_token,
-      client_id:    clientId,
-    });
+    res.status(200).json({ access_token: data.access_token, client_id: clientId });
   } catch (e) {
     res.status(500).json({ error: e.message });
   }
