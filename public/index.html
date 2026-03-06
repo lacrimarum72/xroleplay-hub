@@ -6,38 +6,47 @@
 <title>X-Roleplay – Live Creator Hub</title>
 <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#080b14;--card:#0d1120;--panel:#111827;--ac:#8b5cf6;--acb:#a78bfa;--glow:rgba(139,92,246,.3);--red:#ef4444;--bdr:rgba(139,92,246,.15);--bdrh:rgba(139,92,246,.45);--t1:#f1f5f9;--t2:#94a3b8;--t3:#475569}
+:root{
+  --bg:#080b14;--card:#0d1120;--panel:#111827;
+  --ac:#8b5cf6;--acb:#a78bfa;--glow:rgba(139,92,246,.3);
+  --red:#ef4444;--bdr:rgba(139,92,246,.15);--bdrh:rgba(139,92,246,.45);
+  --t1:#f1f5f9;--t2:#94a3b8;--t3:#475569;
+  --card-h:300px; /* ← eine Variable für die Kartenhöhe */
+}
 *{margin:0;padding:0;box-sizing:border-box}
-body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--t1);min-height:100vh;overflow-x:hidden}
-body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse 80% 50% at 20% 10%,rgba(139,92,246,.07) 0%,transparent 60%),radial-gradient(ellipse 60% 40% at 80% 85%,rgba(99,102,241,.05) 0%,transparent 55%);pointer-events:none;z-index:0}
+body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--t1);min-height:100vh}
+body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse 80% 50% at 20% 10%,rgba(139,92,246,.07) 0%,transparent 60%);pointer-events:none;z-index:0}
 
-nav{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:0 28px;height:58px;background:rgba(8,11,20,.92);backdrop-filter:blur(18px);border-bottom:1px solid var(--bdr)}
+/* NAV */
+nav{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:0 28px;height:58px;background:rgba(8,11,20,.95);backdrop-filter:blur(18px);border-bottom:1px solid var(--bdr)}
 .logo{display:flex;align-items:center;gap:9px;text-decoration:none;color:var(--t1)}
-.logo-x{width:29px;height:29px;background:var(--ac);clip-path:polygon(50% 0%,100% 50%,50% 100%,0% 50%);display:grid;place-items:center;font-family:'Rajdhani',sans-serif;font-weight:700;font-size:13px;color:#fff}
-.logo span{font-family:'Rajdhani',sans-serif;font-size:19px;font-weight:700;letter-spacing:1px}
+.logo-x{width:28px;height:28px;background:var(--ac);clip-path:polygon(50% 0%,100% 50%,50% 100%,0% 50%);display:grid;place-items:center;font-family:'Rajdhani',sans-serif;font-weight:700;font-size:12px;color:#fff}
+.logo span{font-family:'Rajdhani',sans-serif;font-size:18px;font-weight:700;letter-spacing:1px}
 .ntabs{display:flex;gap:3px}
-.ntab{padding:5px 15px;border-radius:6px;cursor:pointer;font-size:13px;font-weight:500;color:var(--t2);transition:all .2s;border:1px solid transparent;user-select:none;text-decoration:none;display:block}
+.ntab{padding:5px 14px;border-radius:6px;font-size:13px;font-weight:500;color:var(--t2);transition:all .2s;border:1px solid transparent;text-decoration:none;display:block}
 .ntab:hover{color:var(--t1);background:var(--panel)}
 .ntab.on{color:var(--acb);background:rgba(139,92,246,.1);border-color:var(--bdr)}
 .pill{display:flex;align-items:center;gap:6px;padding:4px 11px;background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.3);border-radius:20px;font-size:11px;font-weight:700;color:#fca5a5;letter-spacing:.9px}
 .dot{width:6px;height:6px;border-radius:50%;background:var(--red);animation:blink 1.5s ease-in-out infinite}
-@keyframes blink{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.72)}}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.3;transform:scale(.7)}}
 
+/* MAIN */
 main{position:relative;z-index:1;max-width:1400px;margin:0 auto;padding:28px 22px 70px}
 .ph{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:22px;flex-wrap:wrap;gap:14px}
 .ph h1{font-family:'Rajdhani',sans-serif;font-size:30px;font-weight:700;line-height:1}
 .ph h1 em{color:var(--acb);font-style:normal}
 .ph p{margin-top:5px;color:var(--t2);font-size:13px}
 .sts{display:flex;gap:22px}
-.st .v{font-family:'Rajdhani',sans-serif;font-size:21px;font-weight:700;color:var(--acb);line-height:1}
+.st .v{font-family:'Rajdhani',sans-serif;font-size:22px;font-weight:700;color:var(--acb);line-height:1}
 .st .l{font-size:10px;color:var(--t3);text-transform:uppercase;letter-spacing:.8px;margin-top:2px;text-align:right}
 
+/* FILTER BAR */
 .fbar{display:flex;align-items:center;gap:7px;margin-bottom:20px;flex-wrap:wrap}
 .fb{padding:5px 13px;border-radius:6px;font-size:12px;font-weight:500;cursor:pointer;border:1px solid var(--bdr);background:transparent;color:var(--t2);transition:all .2s;font-family:'Outfit',sans-serif}
 .fb:hover{color:var(--t1);border-color:var(--bdrh)}
 .fb.on{background:var(--ac);border-color:var(--ac);color:#fff}
 .fsep{width:1px;height:18px;background:var(--bdr);margin:0 3px}
-.rbtn{display:flex;align-items:center;gap:6px;padding:5px 13px;border-radius:6px;font-size:12px;font-weight:500;cursor:pointer;border:1px solid var(--bdr);background:transparent;color:var(--t2);transition:all .2s;font-family:'Outfit',sans-serif}
+.rbtn{display:flex;align-items:center;gap:6px;padding:5px 13px;border-radius:6px;font-size:12px;cursor:pointer;border:1px solid var(--bdr);background:transparent;color:var(--t2);transition:all .2s;font-family:'Outfit',sans-serif}
 .rbtn:hover{color:var(--t1);border-color:var(--bdrh)}
 .rbtn.spin svg{animation:rot .7s linear infinite}
 @keyframes rot{to{transform:rotate(360deg)}}
@@ -47,134 +56,129 @@ main{position:relative;z-index:1;max-width:1400px;margin:0 auto;padding:28px 22p
 .srch input::placeholder{color:var(--t3)}
 #last-upd{font-size:11px;color:var(--t3);margin-left:4px}
 
-/* ══════════════════════════════════════
-   GRID — 3 Spalten, FESTE Kartenhöhe
-══════════════════════════════════════ */
+/* ═══════════════════════════════════════
+   GRID
+═══════════════════════════════════════ */
 #grid{
   display:grid;
   grid-template-columns:repeat(3,1fr);
-  grid-auto-rows:280px; /* ← FESTE Zeilenhöhe — alle Karten identisch */
   gap:14px;
 }
-@media(max-width:1000px){#grid{grid-template-columns:repeat(2,1fr);grid-auto-rows:260px}}
-@media(max-width:600px){#grid{grid-template-columns:1fr;grid-auto-rows:260px}}
+@media(max-width:960px){#grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:560px){#grid{grid-template-columns:1fr}}
 
-/* CARD */
+/* ═══════════════════════════════════════
+   CARD — alles in EINER Box
+   Thumbnail oben (feste Höhe),
+   Info unten (feste Höhe)
+   → Karte = immer gleich groß
+═══════════════════════════════════════ */
 .card{
-  border-radius:11px;
+  border-radius:12px;
   overflow:hidden;
   background:var(--card);
   border:1px solid var(--bdr);
-  transition:transform .25s,box-shadow .25s,border-color .25s;
-  animation:fi .45s ease both;
   text-decoration:none;
   color:inherit;
-  display:grid;
-  grid-template-rows:1fr 76px; /* thumbnail nimmt alles außer info-leiste */
-  height:100%;
+  display:block;              /* normaler Block */
+  width:100%;
+  transition:transform .22s,box-shadow .22s,border-color .22s;
+  animation:fi .4s ease both;
 }
-.card:hover{transform:translateY(-3px) scale(1.012);box-shadow:0 12px 32px rgba(0,0,0,.55),0 0 0 1px var(--bdrh),0 0 22px var(--glow);border-color:var(--bdrh)}
-@keyframes fi{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.card:hover{
+  transform:translateY(-3px) scale(1.012);
+  box-shadow:0 12px 32px rgba(0,0,0,.6),0 0 0 1px var(--bdrh),0 0 20px var(--glow);
+  border-color:var(--bdrh);
+}
+@keyframes fi{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
 .card:nth-child(1){animation-delay:.03s}.card:nth-child(2){animation-delay:.07s}.card:nth-child(3){animation-delay:.11s}
-.card:nth-child(4){animation-delay:.15s}.card:nth-child(5){animation-delay:.19s}.card:nth-child(6){animation-delay:.23s}
-.card:nth-child(7){animation-delay:.27s}.card:nth-child(8){animation-delay:.31s}.card:nth-child(9){animation-delay:.35s}
-.card:nth-child(10){animation-delay:.39s}.card:nth-child(11){animation-delay:.43s}
-.card.off{opacity:.65}
+.card:nth-child(4){animation-delay:.14s}.card:nth-child(5){animation-delay:.18s}.card:nth-child(6){animation-delay:.22s}
+.card:nth-child(7){animation-delay:.26s}.card:nth-child(8){animation-delay:.30s}.card:nth-child(9){animation-delay:.34s}
+.card:nth-child(10){animation-delay:.38s}.card:nth-child(11){animation-delay:.42s}
+.card.off{opacity:.6}
 .card.off:hover{opacity:1}
 
-/* THUMBNAIL */
+/* THUMBNAIL — feste Höhe, kein aspect-ratio */
 .thumb{
   position:relative;
   width:100%;
-  height:100%;
+  height:190px;   /* ← FESTE Höhe für alle Thumbnails */
   overflow:hidden;
-  background:#07090f;
+  background:#060810;
+  display:block;
 }
 .thumb img{
-  position:absolute;
-  inset:0;
   width:100%;
   height:100%;
   object-fit:cover;
-  transition:transform .4s;
   display:block;
+  transition:transform .4s;
 }
 .card:hover .thumb img{transform:scale(1.06)}
 
 /* Offline placeholder */
 .tfall{
-  position:absolute;
-  inset:0;
+  width:100%;
+  height:100%;
   display:flex;
   flex-direction:column;
   align-items:center;
   justify-content:center;
   gap:10px;
-  background:#07090f;
 }
-.tfall svg{opacity:.12}
-.tfall span{font-family:'Rajdhani',sans-serif;font-size:11px;color:var(--t3);letter-spacing:2px;text-transform:uppercase}
+.tfall svg{opacity:.1}
+.tfall span{font-family:'Rajdhani',sans-serif;font-size:11px;color:var(--t3);letter-spacing:2px}
 
-.tgrad{position:absolute;bottom:0;left:0;right:0;height:50%;background:linear-gradient(to top,rgba(8,11,20,.88),transparent);pointer-events:none;z-index:1}
-.tshim{position:absolute;inset:0;background:linear-gradient(105deg,transparent 40%,rgba(139,92,246,.05) 50%,transparent 60%);background-size:200% 100%;animation:sw 3.2s linear infinite;pointer-events:none;z-index:2}
+.tgrad{position:absolute;bottom:0;left:0;right:0;height:55%;background:linear-gradient(to top,rgba(6,8,16,.95),transparent);pointer-events:none;z-index:1}
+.tshim{position:absolute;inset:0;background:linear-gradient(105deg,transparent 40%,rgba(139,92,246,.04) 50%,transparent 60%);background-size:200% 100%;animation:sw 3s linear infinite;pointer-events:none;z-index:2}
 @keyframes sw{0%{background-position:200% 0}100%{background-position:-200% 0}}
 
-.blive{position:absolute;top:10px;left:10px;z-index:3;display:flex;align-items:center;gap:5px;padding:3px 9px;border-radius:4px;font-size:10px;font-weight:700;letter-spacing:1px;background:var(--red);color:#fff}
+.blive{position:absolute;top:9px;left:9px;z-index:3;display:flex;align-items:center;gap:5px;padding:3px 8px;border-radius:4px;font-size:9px;font-weight:700;letter-spacing:1px;background:var(--red);color:#fff}
 .blive .d{width:5px;height:5px;border-radius:50%;background:#fff;animation:blink 1.4s infinite}
-.boff{position:absolute;top:10px;left:10px;z-index:3;padding:3px 9px;border-radius:4px;font-size:10px;font-weight:600;letter-spacing:.8px;background:rgba(10,14,28,.85);border:1px solid var(--bdr);color:var(--t3)}
-.bplat{position:absolute;top:10px;right:10px;z-index:3;width:22px;height:22px;border-radius:4px;display:grid;place-items:center;font-size:12px;font-weight:700;background:#9146ff;color:#fff}
-.vcnt{position:absolute;bottom:8px;right:10px;z-index:3;display:flex;align-items:center;gap:4px;font-size:12px;font-weight:600;color:#fff;text-shadow:0 1px 4px rgba(0,0,0,.9)}
+.boff{position:absolute;top:9px;left:9px;z-index:3;padding:3px 8px;border-radius:4px;font-size:9px;font-weight:600;letter-spacing:.8px;background:rgba(6,8,16,.9);border:1px solid var(--bdr);color:var(--t3)}
+.bplat{position:absolute;top:9px;right:9px;z-index:3;width:20px;height:20px;border-radius:4px;display:grid;place-items:center;font-size:11px;font-weight:700;background:#9146ff;color:#fff}
+.vcnt{position:absolute;bottom:7px;right:9px;z-index:3;display:flex;align-items:center;gap:4px;font-size:11px;font-weight:600;color:#fff;text-shadow:0 1px 4px rgba(0,0,0,.9)}
 
-/* INFO BAR — feste Höhe 76px, nie größer */
+/* INFO — feste Höhe */
 .info{
-  height:76px;
-  padding:8px 12px;
+  width:100%;
+  height:80px;   /* ← FESTE Höhe */
+  padding:8px 12px 7px;
   display:flex;
   flex-direction:column;
   justify-content:space-between;
   overflow:hidden;
   background:var(--card);
-  border-top:1px solid var(--bdr);
+  border-top:1px solid rgba(139,92,246,.08);
 }
-.meta{display:flex;align-items:center;gap:8px;min-width:0}
-.av{width:30px;height:30px;border-radius:50%;border:2px solid var(--ac);overflow:hidden;flex-shrink:0;background:var(--panel);display:grid;place-items:center;font-family:'Rajdhani',sans-serif;font-weight:700;font-size:12px;color:var(--acb)}
+.meta{display:flex;align-items:center;gap:8px;overflow:hidden}
+.av{width:30px;height:30px;min-width:30px;border-radius:50%;border:2px solid var(--ac);overflow:hidden;background:var(--panel);display:grid;place-items:center;font-family:'Rajdhani',sans-serif;font-weight:700;font-size:12px;color:var(--acb)}
 .av.lr{border-color:var(--red);box-shadow:0 0 0 2px rgba(239,68,68,.2)}
 .av img{width:100%;height:100%;object-fit:cover}
-.tx{flex:1;min-width:0}
-.sn{font-family:'Rajdhani',sans-serif;font-size:14px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;line-height:1.2}
-/* stream titel — max 1 zeile, abgeschnitten */
-.sg{
-  font-size:10px;color:var(--t3);
-  white-space:nowrap;
-  overflow:hidden;
-  text-overflow:ellipsis;
-  max-width:100%;
-  line-height:1.3;
-}
-.vb{display:flex;align-items:center;gap:3px;font-family:'Rajdhani',sans-serif;font-size:12px;font-weight:600;color:var(--acb);flex-shrink:0;margin-left:4px}
+.tx{flex:1;min-width:0;overflow:hidden}
+.sn{font-family:'Rajdhani',sans-serif;font-size:14px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sg{font-size:10px;color:var(--t3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:1px}
+.vb{display:flex;align-items:center;gap:3px;font-family:'Rajdhani',sans-serif;font-size:12px;font-weight:600;color:var(--acb);min-width:fit-content;margin-left:6px}
 
-/* TAGS + LINK in einer Zeile */
-.bottom-row{display:flex;align-items:center;gap:6px;min-width:0;overflow:hidden}
-.tgs{display:flex;gap:3px;overflow:hidden;flex-shrink:1}
-.tg{padding:1px 7px;border-radius:3px;font-size:9px;font-weight:600;background:rgba(139,92,246,.12);border:1px solid rgba(139,92,246,.2);color:var(--acb);white-space:nowrap}
-.tg.game{background:rgba(34,197,94,.08);border-color:rgba(34,197,94,.22);color:#86efac}
-.stats-link{font-size:10px;color:var(--ac);text-decoration:none;white-space:nowrap;opacity:.7;margin-left:auto;flex-shrink:0}
-.stats-link:hover{opacity:1}
+.bottom{display:flex;align-items:center;gap:5px;overflow:hidden}
+.tgs{display:flex;gap:3px;overflow:hidden;min-width:0}
+.tg{padding:1px 6px;border-radius:3px;font-size:9px;font-weight:600;background:rgba(139,92,246,.12);border:1px solid rgba(139,92,246,.2);color:var(--acb);white-space:nowrap;flex-shrink:0}
+.tg.game{background:rgba(34,197,94,.08);border-color:rgba(34,197,94,.2);color:#86efac}
+.alink{font-size:10px;color:var(--ac);text-decoration:none;white-space:nowrap;opacity:.65;margin-left:auto;padding-left:6px;flex-shrink:0}
+.alink:hover{opacity:1}
 
 /* SKELETON */
-.skel{border-radius:11px;overflow:hidden;background:var(--card);border:1px solid var(--bdr);animation:fi .4s ease both;height:100%}
-.skel-thumb{height:calc(100% - 76px);background:linear-gradient(90deg,var(--panel) 25%,#161d30 50%,var(--panel) 75%);background-size:200% 100%;animation:shimmer 1.4s infinite}
-.skel-info{height:76px;padding:10px 12px;display:flex;flex-direction:column;gap:8px;justify-content:center}
-.skel-line{height:10px;border-radius:4px;background:linear-gradient(90deg,var(--panel) 25%,#161d30 50%,var(--panel) 75%);background-size:200% 100%;animation:shimmer 1.4s infinite}
-@keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
+.skel{border-radius:12px;overflow:hidden;background:var(--card);border:1px solid var(--bdr);animation:fi .4s ease both}
+.skel-t{height:190px;background:linear-gradient(90deg,var(--panel) 25%,#161d30 50%,var(--panel) 75%);background-size:200% 100%;animation:sh 1.4s infinite}
+.skel-i{height:80px;padding:10px 12px;display:flex;flex-direction:column;gap:9px;justify-content:center}
+.skel-l{height:10px;border-radius:4px;background:linear-gradient(90deg,var(--panel) 25%,#161d30 50%,var(--panel) 75%);background-size:200% 100%;animation:sh 1.4s infinite}
+@keyframes sh{0%{background-position:200% 0}100%{background-position:-200% 0}}
 </style>
 </head>
 <body>
+
 <nav>
-  <a class="logo" href="index.html">
-    <div class="logo-x">X</div>
-    <span>X-Roleplay</span>
-  </a>
+  <a class="logo" href="index.html"><div class="logo-x">X</div><span>X-Roleplay</span></a>
   <div class="ntabs">
     <a class="ntab on" href="index.html">Live Hub</a>
     <a class="ntab"    href="analytics.html">Analytics</a>
@@ -233,9 +237,7 @@ const STREAMERS=[
 
 let clientId=null,token=null,streamData={},userProfiles={},curFilter='all',curSearch='';
 function fv(n){return n>=1000?(n/1000).toFixed(1)+'K':n}
-
-// Kürzt Text auf max. Zeichen
-function trunc(str,max){if(!str)return '';return str.length>max?str.substring(0,max)+'…':str;}
+function trunc(s,n){return s&&s.length>n?s.slice(0,n)+'…':s||''}
 
 async function init(){
   showSkeletons();
@@ -243,8 +245,7 @@ async function init(){
     const r=await fetch('/api/token');
     const d=await r.json();
     token=d.access_token;clientId=d.client_id;
-    await loadAll();
-    startAutoRefresh();
+    await loadAll();startAutoRefresh();
   }catch(e){showError();}
 }
 
@@ -275,45 +276,58 @@ function buildCard(s){
   const name=prof.display_name||s.display;
   const av=prof.profile_image_url||'';
   const game=st?.game_name||'';
-  const title=trunc(st?.title||'',40); // max 40 Zeichen
+  const title=trunc(st?.title||'',45);
   const views=st?.viewer_count||0;
   const allTags=game?[game,...s.tags]:s.tags;
 
-  const thumbHtml=live
-    ?`<img src="${st.thumbnail_url.replace('{width}','640').replace('{height}','360')}?t=${Date.now()}" alt="${name}">`
-    :`<div class="tfall">
-        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#8b5cf6" stroke-width="1.1">
-          <path d="M21 2H3v16h5v4l4-4h5l4-4V2z"/>
-          <line x1="9" y1="9" x2="9" y2="14"/>
-          <line x1="14" y1="9" x2="14" y2="14"/>
-        </svg>
-        <span>Offline</span>
-      </div>`;
+  // Thumbnail: echtes Bild oder Offline-Platzhalter
+  const tInner = live
+    ? `<img src="${st.thumbnail_url.replace('{width}','640').replace('{height}','360')}?t=${Date.now()}" alt="${name}">`
+    : `<div class="tfall">
+         <svg width="50" height="50" viewBox="0 0 24 24" fill="none" stroke="#8b5cf6" stroke-width="1">
+           <path d="M21 2H3v16h5v4l4-4h5l4-4V2z"/>
+           <line x1="9" y1="9" x2="9" y2="14"/>
+           <line x1="14" y1="9" x2="14" y2="14"/>
+         </svg>
+         <span>OFFLINE</span>
+       </div>`;
 
-  const avHtml=av
-    ?`<img src="${av}" alt="${name}" onerror="this.style.display='none';this.parentElement.textContent='${s.ini}'">`
-    :s.ini;
+  const avInner = av
+    ? `<img src="${av}" alt="${name}" onerror="this.style.display='none';this.parentElement.textContent='${s.ini}'">`
+    : s.ini;
 
-  return `<a class="card${live?'':' off'}" href="https://www.twitch.tv/${s.login}" target="_blank" rel="noopener">
+  return `
+<a class="card${live?'':' off'}" href="https://www.twitch.tv/${s.login}" target="_blank" rel="noopener">
   <div class="thumb">
-    ${thumbHtml}
-    <div class="tgrad"></div><div class="tshim"></div>
-    ${live?`<div class="blive"><div class="d"></div>LIVE</div>`:`<div class="boff">OFFLINE</div>`}
+    ${tInner}
+    <div class="tgrad"></div>
+    <div class="tshim"></div>
+    ${live ? `<div class="blive"><div class="d"></div>LIVE</div>` : `<div class="boff">OFFLINE</div>`}
     <div class="bplat">T</div>
-    ${live?`<div class="vcnt"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>${fv(views)}</div>`:''}
+    ${live ? `<div class="vcnt">
+      <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>
+      </svg>${fv(views)}</div>` : ''}
   </div>
   <div class="info">
     <div class="meta">
-      <div class="av${live?' lr':''}">${avHtml}</div>
+      <div class="av${live?' lr':''}">${avInner}</div>
       <div class="tx">
         <div class="sn">${name}</div>
-        <div class="sg">${live?(title||game||'Twitch Stream'):'Nicht live'}</div>
+        <div class="sg">${live ? (title||game||'Twitch Stream') : 'Nicht live'}</div>
       </div>
-      ${live?`<div class="vb"><svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>${fv(views)}</div>`:''}
+      ${live ? `<div class="vb">
+        <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+          <circle cx="9" cy="7" r="4"/>
+          <path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/>
+        </svg>${fv(views)}</div>` : ''}
     </div>
-    <div class="bottom-row">
-      <div class="tgs">${allTags.slice(0,3).map((t,i)=>`<span class="tg${i===0&&live&&game?' game':''}">${t}</span>`).join('')}</div>
-      <a class="stats-link" href="analytics.html?streamer=${s.login}" onclick="event.stopPropagation()">📊 Auswertung →</a>
+    <div class="bottom">
+      <div class="tgs">
+        ${allTags.slice(0,3).map((t,i)=>`<span class="tg${i===0&&live&&game?' game':''}">${t}</span>`).join('')}
+      </div>
+      <a class="alink" href="analytics.html?streamer=${s.login}" onclick="event.stopPropagation()">📊 Auswertung →</a>
     </div>
   </div>
 </a>`;
@@ -326,12 +340,12 @@ function render(){
     if(al!==bl)return bl-al;
     return(streamData[b.login]?.viewer_count||0)-(streamData[a.login]?.viewer_count||0);
   });
-  if(curFilter==='live')list=list.filter(s=>streamData[s.login]);
-  if(curFilter==='off')list=list.filter(s=>!streamData[s.login]);
-  if(curSearch)list=list.filter(s=>s.display.toLowerCase().includes(curSearch)||s.login.includes(curSearch));
-  document.getElementById('grid').innerHTML=list.length
-    ?list.map(buildCard).join('')
-    :`<div style="grid-column:1/-1;padding:55px;text-align:center;color:var(--t3)">Keine Streamer gefunden.</div>`;
+  if(curFilter==='live') list=list.filter(s=> streamData[s.login]);
+  if(curFilter==='off')  list=list.filter(s=>!streamData[s.login]);
+  if(curSearch) list=list.filter(s=>s.display.toLowerCase().includes(curSearch)||s.login.includes(curSearch));
+  document.getElementById('grid').innerHTML = list.length
+    ? list.map(buildCard).join('')
+    : `<div style="grid-column:1/-1;padding:60px;text-align:center;color:var(--t3)">Keine Streamer gefunden.</div>`;
 }
 
 function updateStats(){
@@ -341,21 +355,20 @@ function updateStats(){
 }
 
 function showSkeletons(){
-  document.getElementById('grid').innerHTML=Array.from({length:11},(_,i)=>
-    `<div class="skel" style="animation-delay:${i*.04}s">
-      <div class="skel-thumb"></div>
-      <div class="skel-info">
-        <div class="skel-line" style="width:55%"></div>
-        <div class="skel-line" style="width:35%"></div>
+  document.getElementById('grid').innerHTML=Array.from({length:11},(_,i)=>`
+    <div class="skel" style="animation-delay:${i*.04}s">
+      <div class="skel-t"></div>
+      <div class="skel-i">
+        <div class="skel-l" style="width:55%"></div>
+        <div class="skel-l" style="width:35%"></div>
       </div>
-    </div>`
-  ).join('');
+    </div>`).join('');
 }
 
 function showError(){
   document.getElementById('grid').innerHTML=`<div style="grid-column:1/-1;padding:50px;text-align:center;color:var(--t3)">
     Verbindungsfehler –
-    <button onclick="location.reload()" style="background:var(--ac);border:none;color:#fff;padding:6px 14px;border-radius:6px;cursor:pointer;margin-left:8px">Neu laden</button>
+    <button onclick="location.reload()" style="background:var(--ac);border:none;color:#fff;padding:6px 14px;border-radius:6px;cursor:pointer;margin-left:8px;font-family:Outfit,sans-serif">Neu laden</button>
   </div>`;
 }
 
